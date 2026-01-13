@@ -1,0 +1,45 @@
+\section{设备体系与 Plan18 最优配置}
+
+规划变量采用 Plan18 体系，设备基准容量与造价由 \texttt{spec/device\_catalog.yaml} 统一定义，风光容量直接按 MW 计。表~\ref{tab:plan18} 给出最终最优解的 Plan18 配置，表~\ref{tab:storage_zone} 给出分区储能配置。
+
+\begin{longtable}{lrrrrl}
+\caption{最优 Plan18 设备配置} \\
+\label{tab:plan18} \\
+\toprule
+设备 & 规划值 & 基准容量 & 总容量 & 单位 \\
+\midrule
+\endfirsthead
+\toprule
+设备 & 规划值 & 基准容量 & 总容量 & 单位 \\
+\midrule
+\endhead
+压缩式制冷机A & 73 & 0.5 & 36.5 & MW \\
+压缩式制冷机B & 2 & 12 & 24.0 & MW \\
+吸收式制冷机 & 5 & 12 & 60.0 & MW \\
+燃气锅炉 & 32 & 2 & 64.0 & MW \\
+热泵A & 9 & 2 & 18.0 & MW \\
+热泵B & 2 & 10 & 20.0 & MW \\
+热储能 & 24 & 40 & 960 & MWh \\
+冷储能 & 31 & 40 & 1240 & MWh \\
+风电 & 362 & 0.482 & 362 & MW \\
+光伏 & 372 & 0.356 & 372 & MW \\
+P2G & 324 & 0.5 & 162 & MW \\
+燃气轮机 & 29 & 5 & 145 & MW \\
+CCHP & 11 & 3 & 33 & MW \\
+\bottomrule
+\end{longtable}
+
+\begin{table}[htbp]
+\centering
+\caption{分区储能配置（最终解）}
+\label{tab:storage_zone}
+\begin{tabular}{lrrl}
+\toprule
+区域 & 热储能容量 & 冷储能容量 & 单位 \\
+\midrule
+学生区 & 400 & 280 & MWh \\
+教工区 & 400 & 0 & MWh \\
+教学办公区 & 160 & 960 & MWh \\
+\bottomrule
+\end{tabular}
+\end{table}

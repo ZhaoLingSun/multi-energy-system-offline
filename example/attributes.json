@@ -1,0 +1,149 @@
+{
+  "metadata": {
+    "version": 1,
+    "description": "设备参数与外部源约束（与 topology.json 对齐）"
+  },
+  "top_level": {
+    "sources": [
+      {
+        "id": "thermal_gen_1",
+        "name": "火电机组1",
+        "type": "Thermal_Generator",
+        "node_ref": "elec_bus_1",
+        "parameters": {
+          "max_output_MW": 1000,
+          "min_output_MW": 0
+        }
+      },
+      {
+        "id": "thermal_gen_2",
+        "name": "火电机组2",
+        "type": "Thermal_Generator",
+        "node_ref": "elec_bus_3",
+        "parameters": {
+          "max_output_MW": 1000,
+          "min_output_MW": 0
+        }
+      },
+      {
+        "id": "thermal_gen_3",
+        "name": "火电机组3",
+        "type": "Thermal_Generator",
+        "node_ref": "elec_bus_2",
+        "parameters": {
+          "max_output_MW": 1000,
+          "min_output_MW": 0
+        }
+      },
+      {
+        "id": "gas_source_1",
+        "name": "天然气源1",
+        "type": "Natural_Gas_Source",
+        "node_ref": "gas_hub_1",
+        "parameters": {
+          "max_output_MW": 8000,
+          "min_output_MW": 0,
+          "base_injection_MW": 1000
+        }
+      }
+    ]
+  },
+  "zones": {
+    "student_zone": {
+      "name": "学生区",
+      "devices": [
+        {
+          "id": "pv_1",
+          "name": "分布式光伏1",
+          "type": "Renewable",
+          "capacity_MW": 500
+        },
+        {
+          "id": "p2g_1",
+          "name": "电制气1",
+          "type": "P2G",
+          "max_input_MW": 71,
+          "efficiency": 0.4
+        },
+        {
+          "id": "boiler_1",
+          "name": "电锅炉1",
+          "type": "E_Boiler",
+          "max_input_MW": 200,
+          "efficiency": 0.9
+        },
+        {
+          "id": "chiller_a1",
+          "name": "压缩式制冷机A1",
+          "type": "Chiller",
+          "max_input_MW": 315,
+          "COP": 4
+        }
+      ]
+    },
+    "faculty_zone": {
+      "name": "教工区",
+      "devices": [
+        {
+          "id": "gas_turbine_2",
+          "name": "燃气轮机2",
+          "type": "GasTurbine",
+          "max_input_MW": 145,
+          "efficiency": 0.7
+        },
+        {
+          "id": "heat_pump_a2",
+          "name": "热泵A2",
+          "type": "HeatPump",
+          "max_input_MW": 800,
+          "COP": 5
+        },
+        {
+          "id": "chiller_b2",
+          "name": "压缩式制冷机B2",
+          "type": "Chiller",
+          "max_input_MW": 80,
+          "COP": 5
+        }
+      ]
+    },
+    "teaching_zone": {
+      "name": "教学办公区",
+      "devices": [
+        {
+          "id": "wind_1",
+          "name": "分布式风电1",
+          "type": "Renewable",
+          "capacity_MW": 500
+        },
+        {
+          "id": "cchp_3",
+          "name": "冷热电联供3",
+          "type": "CCHP",
+          "max_input_MW": 396,
+          "eta_e": 0.4,
+          "eta_h": 0.3,
+          "eta_c": 0.3
+        },
+        {
+          "id": "gas_boiler_3",
+          "name": "燃气锅炉3",
+          "type": "GasBoiler",
+          "max_input_MW": 400,
+          "efficiency": 0.95
+        },
+        {
+          "id": "abs_chiller_3",
+          "name": "吸收式制冷机3",
+          "type": "Absorption",
+          "max_input_MW": 160,
+          "COP": 0.8
+        }
+      ]
+    }
+  },
+  "constraints": {
+    "gas_to_MWh": 0.01,
+    "load_shedding_penalty": 500000
+  }
+}

@@ -1,0 +1,710 @@
+[
+  {
+    "system_info": {
+      "system_name": "学生区",
+    "description": "多能源耦合系统能源流向图"
+  },
+  "nodes": [
+    {
+      "id": "elec_port_1",
+      "name": "电端口1",
+      "label": "Electricity",
+      "type": "Source",
+      "category": "Energy_Port"
+    },
+    {
+      "id": "pv_1",
+      "name": "分布式光伏1",
+      "type": "Source",
+      "category": "Renewable_Generation"
+    },
+    {
+      "id": "heat_port_1",
+      "name": "热端口1",
+      "label": "Heat",
+      "type": "Source",
+      "category": "Energy_Port"
+    },
+    {
+      "id": "p2g_1",
+      "name": "电制气1",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "chiller_1",
+      "name": "压缩式制冷机A1",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "boiler_1",
+      "name": "电锅炉1",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "gas_out_1",
+      "name": "气输出1",
+      "label": "Gas",
+      "type": "Sink",
+      "category": "Output_Port"
+    },
+    {
+      "id": "elec_out_1",
+      "name": "电输出1",
+      "label": "Electricity",
+      "type": "Sink",
+      "category": "Output_Port"
+    },
+    {
+      "id": "elec_load_1",
+      "name": "电负荷1",
+      "type": "Load",
+      "category": "Consumer"
+    },
+    {
+      "id": "cool_load_1",
+      "name": "冷负荷1",
+      "type": "Load",
+      "category": "Consumer"
+    },
+    {
+      "id": "heat_load_1",
+      "name": "热负荷1",
+      "type": "Load",
+      "category": "Consumer"
+    }
+  ],
+  "links": [
+    {
+      "source": "elec_port_1",
+      "target": "p2g_1",
+      "medium": "Electricity",
+      "label": "电支路1",
+      "color": "Yellow"
+    },
+    {
+      "source": "elec_port_1",
+      "target": "elec_out_1",
+      "medium": "Electricity",
+      "label": "电支路2",
+      "color": "Yellow"
+    },
+    {
+      "source": "elec_port_1",
+      "target": "chiller_1",
+      "medium": "Electricity",
+      "label": "电支路4",
+      "color": "Yellow"
+    },
+    {
+      "source": "elec_port_1",
+      "target": "elec_load_1",
+      "medium": "Electricity",
+      "label": "未标注(隐含连接)",
+      "color": "Yellow"
+    },
+    {
+      "source": "pv_1",
+      "target": "elec_out_1",
+      "medium": "Electricity",
+      "label": "电支路3",
+      "color": "Yellow"
+    },
+    {
+      "source": "pv_1",
+      "target": "p2g_1",
+      "medium": "Electricity",
+      "label": "电支路6",
+      "color": "Yellow"
+    },
+    {
+      "source": "pv_1",
+      "target": "elec_load_1",
+      "medium": "Electricity",
+      "label": "电支路7",
+      "color": "Yellow"
+    },
+    {
+      "source": "pv_1",
+      "target": "chiller_1",
+      "medium": "Electricity",
+      "label": "电支路8",
+      "color": "Yellow"
+    },
+    {
+      "source": "pv_1",
+      "target": "boiler_1",
+      "medium": "Electricity",
+      "label": "电支路9",
+      "color": "Yellow"
+    },
+    {
+      "source": "p2g_1",
+      "target": "gas_out_1",
+      "medium": "Gas",
+      "label": "气支路1",
+      "color": "Green"
+    },
+    {
+      "source": "chiller_1",
+      "target": "cool_load_1",
+      "medium": "Cooling_Water",
+      "label": "冷支路1",
+      "color": "Blue"
+    },
+    {
+      "source": "boiler_1",
+      "target": "heat_load_1",
+      "medium": "Heat",
+      "label": "热支路1(分支)",
+      "color": "Red"
+    },
+    {
+      "source": "heat_port_1",
+      "target": "heat_load_1",
+      "medium": "Heat",
+      "label": "热支路1(主路)",
+      "color": "Red"
+    }
+  ]
+},
+{
+  "system_info": {
+    "system_name": "教工区",
+    "description": "教工区多能源耦合系统能源流向图"
+  },
+  "nodes": [
+    {
+      "id": "gas_port_2",
+      "name": "气端口2",
+      "label": "Gas",
+      "type": "Source",
+      "category": "Energy_Port"
+    },
+    {
+      "id": "elec_port_2",
+      "name": "电端口2",
+      "label": "Electricity",
+      "type": "Source",
+      "category": "Energy_Port"
+    },
+    {
+      "id": "heat_port_2",
+      "name": "热端口2",
+      "label": "Heat",
+      "type": "Source",
+      "category": "Energy_Port"
+    },
+    {
+      "id": "gas_turbine_2",
+      "name": "燃气轮机2",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "heat_pump_a2",
+      "name": "热泵A2",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "chiller_b2",
+      "name": "压缩式制冷机B2",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "elec_load_2",
+      "name": "电负荷2",
+      "type": "Load",
+      "category": "Consumer"
+    },
+    {
+      "id": "cool_load_2",
+      "name": "冷负荷2",
+      "type": "Load",
+      "category": "Consumer"
+    },
+    {
+      "id": "heat_load_2",
+      "name": "热负荷2",
+      "type": "Load",
+      "category": "Consumer"
+    }
+  ],
+  "links": [
+    {
+      "source": "gas_port_2",
+      "target": "gas_turbine_2",
+      "medium": "Gas",
+      "label": "气支路1",
+      "color": "Green"
+    },
+    {
+      "source": "gas_turbine_2",
+      "target": "elec_load_2",
+      "medium": "Electricity",
+      "label": "电支路3",
+      "color": "Yellow"
+    },
+    {
+      "source": "gas_turbine_2",
+      "target": "heat_pump_a2",
+      "medium": "Electricity",
+      "label": "电支路5",
+      "color": "Yellow"
+    },
+    {
+      "source": "gas_turbine_2",
+      "target": "chiller_b2",
+      "medium": "Electricity",
+      "label": "电支路6",
+      "color": "Yellow"
+    },
+    {
+      "source": "elec_port_2",
+      "target": "heat_pump_a2",
+      "medium": "Electricity",
+      "label": "电支路1",
+      "color": "Yellow"
+    },
+    {
+      "source": "elec_port_2",
+      "target": "chiller_b2",
+      "medium": "Electricity",
+      "label": "电支路2",
+      "color": "Yellow"
+    },
+    {
+      "source": "elec_port_2",
+      "target": "elec_load_2",
+      "medium": "Electricity",
+      "label": "未标注(隐含直连)",
+      "color": "Yellow"
+    },
+    {
+      "source": "heat_pump_a2",
+      "target": "heat_load_2",
+      "medium": "Heat",
+      "label": "热支路1",
+      "color": "Red"
+    },
+    {
+      "source": "chiller_b2",
+      "target": "cool_load_2",
+      "medium": "Cooling_Water",
+      "label": "冷支路1",
+      "color": "Blue"
+    },
+    {
+      "source": "heat_port_2",
+      "target": "heat_load_2",
+      "medium": "Heat",
+      "label": "热支路2",
+      "color": "Red"
+    }
+  ]
+},
+{
+  "system_info": {
+    "system_name": "教学办公区",
+    "description": "教学办公区多能源耦合系统能源流向图，包含冷热电联供与风电"
+  },
+  "nodes": [
+    {
+      "id": "elec_port_3",
+      "name": "电端口3",
+      "label": "Electricity",
+      "type": "Source",
+      "category": "Energy_Port"
+    },
+    {
+      "id": "wind_power_1",
+      "name": "分布式风电1",
+      "type": "Source",
+      "category": "Renewable_Generation"
+    },
+    {
+      "id": "gas_port_3",
+      "name": "气端口3",
+      "label": "Gas",
+      "type": "Source",
+      "category": "Energy_Port"
+    },
+    {
+      "id": "cchp_3",
+      "name": "冷热电联供3",
+      "type": "Converter",
+      "category": "Conversion_Device",
+      "note": "同时输出电、热、冷"
+    },
+    {
+      "id": "gas_boiler_3",
+      "name": "燃气锅炉3",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "abs_chiller_3",
+      "name": "吸收式制冷机3",
+      "type": "Converter",
+      "category": "Conversion_Device"
+    },
+    {
+      "id": "elec_out_3",
+      "name": "电输出3",
+      "label": "Electricity",
+      "type": "Sink",
+      "category": "Output_Port"
+    },
+    {
+      "id": "heat_out_3",
+      "name": "热输出3",
+      "label": "Heat",
+      "type": "Sink",
+      "category": "Output_Port"
+    },
+    {
+      "id": "elec_load_3",
+      "name": "电负荷3",
+      "type": "Load",
+      "category": "Consumer"
+    },
+    {
+      "id": "heat_load_3",
+      "name": "热负荷3",
+      "type": "Load",
+      "category": "Consumer"
+    },
+    {
+      "id": "cool_load_3",
+      "name": "冷负荷3",
+      "type": "Load",
+      "category": "Consumer"
+    }
+  ],
+  "links": [
+    {
+      "source": "elec_port_3",
+      "target": "elec_out_3",
+      "medium": "Electricity",
+      "label": "电支路1",
+      "color": "Yellow"
+    },
+    {
+      "source": "elec_port_3",
+      "target": "elec_load_3",
+      "medium": "Electricity",
+      "label": "电支路2",
+      "color": "Yellow"
+    },
+    {
+      "source": "wind_power_1",
+      "target": "elec_out_3",
+      "medium": "Electricity",
+      "label": "电支路3",
+      "color": "Yellow"
+    },
+    {
+      "source": "wind_power_1",
+      "target": "elec_load_3",
+      "medium": "Electricity",
+      "label": "电支路4",
+      "color": "Yellow"
+    },
+    {
+      "source": "cchp_3",
+      "target": "elec_out_3",
+      "medium": "Electricity",
+      "label": "电支路5",
+      "color": "Yellow"
+    },
+    {
+      "source": "cchp_3",
+      "target": "elec_load_3",
+      "medium": "Electricity",
+      "label": "电支路6",
+      "color": "Yellow"
+    },
+    {
+      "source": "gas_port_3",
+      "target": "cchp_3",
+      "medium": "Gas",
+      "label": "气支路1",
+      "color": "Green"
+    },
+    {
+      "source": "gas_port_3",
+      "target": "gas_boiler_3",
+      "medium": "Gas",
+      "label": "气支路2",
+      "color": "Green"
+    },
+    {
+      "source": "cchp_3",
+      "target": "heat_out_3",
+      "medium": "Heat",
+      "label": "热支路1",
+      "color": "Red"
+    },
+    {
+      "source": "cchp_3",
+      "target": "heat_load_3",
+      "medium": "Heat",
+      "label": "热支路2",
+      "color": "Red"
+    },
+    {
+      "source": "cchp_3",
+      "target": "abs_chiller_3",
+      "medium": "Heat",
+      "label": "热支路5(推测)",
+      "color": "Red",
+      "note": "余热供给吸收式制冷"
+    },
+    {
+      "source": "gas_boiler_3",
+      "target": "heat_out_3",
+      "medium": "Heat",
+      "label": "热支路4",
+      "color": "Red"
+    },
+    {
+      "source": "gas_boiler_3",
+      "target": "heat_load_3",
+      "medium": "Heat",
+      "label": "热支路6",
+      "color": "Red"
+    },
+    {
+      "source": "gas_boiler_3",
+      "target": "abs_chiller_3",
+      "medium": "Heat",
+      "label": "热支路7",
+      "color": "Red",
+      "note": "锅炉补热供给吸收式制冷"
+    },
+    {
+      "source": "cchp_3",
+      "target": "cool_load_3",
+      "medium": "Cooling_Water",
+      "label": "冷支路2",
+      "color": "Blue",
+      "note": "联供机组直接供冷"
+    },
+    {
+      "source": "abs_chiller_3",
+      "target": "cool_load_3",
+      "medium": "Cooling_Water",
+      "label": "冷支路3",
+      "color": "Blue"
+    }
+  ]
+},
+{
+  "system_info": {
+    "system_name": "区域综合能源系统总览",
+    "description": "顶层网络拓扑图，连接各个子区域与主干能源网络",
+    "topology_type": "Multi-Energy_Network"
+  },
+  "network_params": {
+    "electric": {
+      "line_reactance": 0.000281,
+      "line_capacity": 400,
+      "theta_min": -3.14,
+      "theta_max": 3.15
+    },
+    "gas": {
+      "pressure_min_MPa": 5,
+      "pressure_max_MPa": 100,
+      "pressure_base_MPa": 10
+    },
+    "heat": {
+      "capacity_MW": null
+    }
+  },
+  "nodes": [
+    {
+      "id": "student_area_subsystem",
+      "name": "学生区",
+      "type": "Subsystem",
+      "description": "包含光伏、电制气、电锅炉等设备的子系统",
+      "ports": ["Electricity", "Gas", "Heat"]
+    },
+    {
+      "id": "faculty_area_subsystem",
+      "name": "教工区",
+      "type": "Subsystem",
+      "description": "包含燃气轮机、热泵等设备的子系统",
+      "ports": ["Electricity", "Gas", "Heat"]
+    },
+    {
+      "id": "teaching_area_subsystem",
+      "name": "教学办公区",
+      "type": "Subsystem",
+      "description": "包含冷热电联供、风电等设备的子系统",
+      "ports": ["Electricity", "Gas", "Heat"]
+    },
+    {
+      "id": "elec_bus_1",
+      "name": "电力节点1",
+      "type": "Grid_Node",
+      "category": "Electricity_Bus"
+    },
+    {
+      "id": "elec_bus_2",
+      "name": "电力节点2",
+      "type": "Grid_Node",
+      "category": "Electricity_Bus"
+    },
+    {
+      "id": "elec_bus_3",
+      "name": "电力节点3",
+      "type": "Grid_Node",
+      "category": "Electricity_Bus"
+    },
+    {
+      "id": "thermal_gen_1",
+      "name": "火电机组1",
+      "type": "Source",
+      "category": "Power_Generation"
+    },
+    {
+      "id": "thermal_gen_2",
+      "name": "火电机组2",
+      "type": "Source",
+      "category": "Power_Generation"
+    },
+    {
+      "id": "thermal_gen_3",
+      "name": "火电机组3",
+      "type": "Source",
+      "category": "Power_Generation"
+    },
+    {
+      "id": "gas_source_1",
+      "name": "天然气源1",
+      "type": "Source",
+      "category": "Gas_Source"
+    },
+    {
+      "id": "gas_node_1",
+      "name": "气网节点1",
+      "type": "Grid_Node",
+      "category": "Gas_Hub"
+    },
+    {
+      "id": "heat_node_1",
+      "name": "热力节点1",
+      "type": "Grid_Node",
+      "category": "Heat_Hub"
+    }
+  ],
+  "links": [
+    {
+      "id": "trans_line_1",
+      "name": "输电线路1",
+      "source": "elec_bus_1",
+      "target": "elec_bus_3",
+      "medium": "Electricity",
+      "category": "Transmission_Line"
+    },
+    {
+      "id": "trans_line_2",
+      "name": "输电线路2",
+      "source": "elec_bus_1",
+      "target": "elec_bus_3",
+      "medium": "Electricity",
+      "category": "Transmission_Line"
+    },
+    {
+      "id": "trans_line_3",
+      "name": "输电线路3",
+      "source": "elec_bus_2",
+      "target": "elec_bus_3",
+      "medium": "Electricity",
+      "category": "Transmission_Line"
+    },
+    {
+      "source": "thermal_gen_1",
+      "target": "elec_bus_1",
+      "medium": "Electricity",
+      "label": "机组接入"
+    },
+    {
+      "source": "thermal_gen_2",
+      "target": "elec_bus_3",
+      "medium": "Electricity",
+      "label": "机组接入"
+    },
+    {
+      "source": "thermal_gen_3",
+      "target": "elec_bus_2",
+      "medium": "Electricity",
+      "label": "机组接入"
+    },
+    {
+      "source": "elec_bus_1",
+      "target": "student_area_subsystem",
+      "medium": "Electricity",
+      "label": "区域供电"
+    },
+    {
+      "source": "elec_bus_2",
+      "target": "faculty_area_subsystem",
+      "medium": "Electricity",
+      "label": "区域供电"
+    },
+    {
+      "source": "elec_bus_3",
+      "target": "teaching_area_subsystem",
+      "medium": "Electricity",
+      "label": "区域供电"
+    },
+    {
+      "source": "gas_source_1",
+      "target": "gas_node_1",
+      "medium": "Gas",
+      "label": "气源引入"
+    },
+    {
+      "source": "gas_node_1",
+      "target": "student_area_subsystem",
+      "medium": "Gas",
+      "label": "区域供气"
+    },
+    {
+      "source": "gas_node_1",
+      "target": "faculty_area_subsystem",
+      "medium": "Gas",
+      "label": "区域供气"
+    },
+    {
+      "source": "gas_node_1",
+      "target": "teaching_area_subsystem",
+      "medium": "Gas",
+      "label": "区域供气"
+    },
+    {
+      "source": "heat_node_1",
+      "target": "student_area_subsystem",
+      "medium": "Heat",
+      "label": "区域热网互联"
+    },
+    {
+      "source": "heat_node_1",
+      "target": "faculty_area_subsystem",
+      "medium": "Heat",
+      "label": "区域热网互联"
+    },
+    {
+      "source": "heat_node_1",
+      "target": "teaching_area_subsystem",
+      "medium": "Heat",
+      "label": "区域热网互联"
+    }
+  ]
+}
+]

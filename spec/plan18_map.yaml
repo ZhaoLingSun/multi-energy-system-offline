@@ -1,0 +1,175 @@
+# Plan18Map - 18维规划向量顺序映射表
+#
+# 本文件定义了 OJ 提交 CSV 中 ans_planning(1:18) 的顺序映射。
+# 来源：平台导出文件（方案号 7940）的规划行顺序。
+# 
+# 重要说明：
+# - 编码类型 (code) 对应 Excel 中 col2 的值（col2 > 200 为规划行）
+# - 规划值写入 Excel 的 col8
+# - 顺序由平台导出决定，不可随意更改
+# - 虽然单位标注为"台"，实际承载的是容量/规模的离散化载体
+
+plan18_map:
+  version: "1.0"
+  source: "平台导出文件（方案号 7940）"
+  frozen_date: null  # 待冻结
+  
+  # 18维规划向量映射
+  devices:
+    - idx: 1
+      code: 201
+      device_name: "热电联产A"
+      device_name_en: "CHP_A"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null  # 待填写基准容量
+      
+    - idx: 2
+      code: 202
+      device_name: "热电联产B"
+      device_name_en: "CHP_B"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 3
+      code: 203
+      device_name: "内燃机"
+      device_name_en: "ICE"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 4
+      code: 204
+      device_name: "电锅炉"
+      device_name_en: "ElectricBoiler"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 5
+      code: 205
+      device_name: "压缩式制冷机A"
+      device_name_en: "Chiller_A"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 6
+      code: 206
+      device_name: "压缩式制冷机B"
+      device_name_en: "Chiller_B"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 7
+      code: 207
+      device_name: "吸收式制冷机组"
+      device_name_en: "AbsorptionChiller"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 8
+      code: 208
+      device_name: "燃气蒸汽锅炉"
+      device_name_en: "GasBoiler"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 9
+      code: 209
+      device_name: "地源热泵A"
+      device_name_en: "GSHP_A"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 10
+      code: 210
+      device_name: "地源热泵B"
+      device_name_en: "GSHP_B"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 11
+      code: 211
+      device_name: "电储能"
+      device_name_en: "BatteryStorage"
+      unit: "台"
+      capacity_unit: "MWh"
+      base_capacity: null
+      
+    - idx: 12
+      code: 212
+      device_name: "热储能"
+      device_name_en: "ThermalStorage"
+      unit: "台"
+      capacity_unit: "MWh"
+      base_capacity: null
+      
+    - idx: 13
+      code: 213
+      device_name: "冷储能"
+      device_name_en: "ColdStorage"
+      unit: "台"
+      capacity_unit: "MWh"
+      base_capacity: null
+      
+    - idx: 14
+      code: 214
+      device_name: "风电"
+      device_name_en: "WindTurbine"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 15
+      code: 215
+      device_name: "光伏"
+      device_name_en: "PV"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 16
+      code: 216
+      device_name: "电制气"
+      device_name_en: "P2G"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 17
+      code: 217
+      device_name: "燃气轮机"
+      device_name_en: "GasTurbine"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+      
+    - idx: 18
+      code: 218
+      device_name: "冷热电联供"
+      device_name_en: "CCHP"
+      unit: "台"
+      capacity_unit: "MW"
+      base_capacity: null
+
+  # 行选择器规则
+  row_selector:
+    column: 2  # col2
+    condition: "> 200"
+    
+  # 规划值列
+  value_column: 8  # col8
+  
+  # 校验规则
+  validation:
+    total_count: 18
+    code_range: [201, 218]
+    code_must_be_unique: true

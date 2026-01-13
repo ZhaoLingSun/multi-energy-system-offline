@@ -1,0 +1,353 @@
+{
+  "metadata": {
+    "version": 1,
+    "description": "设备类型端口与成本目录（供顶层优化与校对使用）",
+    "sources": [
+      "spec/device_catalog.yaml",
+      "matlab/configs/device_catalog.yaml"
+    ],
+    "units": {
+      "unit_cost": "CNY per capacity_unit",
+      "capacity_unit": "MW or MWh"
+    },
+    "port_convention": {
+      "direction_rule": "Input must connect to Output",
+      "mediums": ["Electricity", "Gas", "Heat", "Cooling"]
+    },
+    "scope_notes": [
+      "仅覆盖可选设备类型（Plan18 对应设备）。",
+      "顶层外部电网/气网/火电机组不在本目录内。"
+    ]
+  },
+  "device_types": [
+    {
+      "idx": 1,
+      "device_id": "CHP_A",
+      "device_name_cn": "热电联产A",
+      "device_name_en": "CHP_A",
+      "category": "cogeneration",
+      "fuel_type": "gas",
+      "capacity": { "base_capacity": 2.0, "capacity_unit": "MW", "max_units": 64 },
+      "cost": { "unit_cost": 8500000, "unit_cost_unit": "CNY/MW", "lifespan_years": 30 },
+      "efficiency": { "electric": 0.22, "thermal": 0.50 },
+      "ports": {
+        "inputs": [{ "medium": "Gas", "role": "Input" }],
+        "outputs": [
+          { "medium": "Electricity", "role": "Output" },
+          { "medium": "Heat", "role": "Output" }
+        ]
+      },
+      "zone_hint": "教学办公区"
+    },
+    {
+      "idx": 2,
+      "device_id": "CHP_B",
+      "device_name_cn": "热电联产B",
+      "device_name_en": "CHP_B",
+      "category": "cogeneration",
+      "fuel_type": "gas",
+      "capacity": { "base_capacity": 8.0, "capacity_unit": "MW", "max_units": 32 },
+      "cost": { "unit_cost": 6000000, "unit_cost_unit": "CNY/MW", "lifespan_years": 30 },
+      "efficiency": { "electric": 0.25, "thermal": 0.55 },
+      "ports": {
+        "inputs": [{ "medium": "Gas", "role": "Input" }],
+        "outputs": [
+          { "medium": "Electricity", "role": "Output" },
+          { "medium": "Heat", "role": "Output" }
+        ]
+      },
+      "zone_hint": "教工区"
+    },
+    {
+      "idx": 3,
+      "device_id": "ICE",
+      "device_name_cn": "内燃机",
+      "device_name_en": "ICE",
+      "category": "cogeneration",
+      "fuel_type": "gas",
+      "capacity": { "base_capacity": 10.0, "capacity_unit": "MW", "max_units": 128 },
+      "cost": { "unit_cost": 4400000, "unit_cost_unit": "CNY/MW", "lifespan_years": 30 },
+      "efficiency": { "electric": 0.35, "thermal": 0.50 },
+      "ports": {
+        "inputs": [{ "medium": "Gas", "role": "Input" }],
+        "outputs": [
+          { "medium": "Electricity", "role": "Output" },
+          { "medium": "Heat", "role": "Output" }
+        ]
+      },
+      "zone_hint": "教工区"
+    },
+    {
+      "idx": 4,
+      "device_id": "ElectricBoiler",
+      "device_name_cn": "电锅炉",
+      "device_name_en": "ElectricBoiler",
+      "category": "boiler",
+      "fuel_type": "electricity",
+      "capacity": { "base_capacity": 2.0, "capacity_unit": "MW", "max_units": 128 },
+      "cost": { "unit_cost": 600000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "thermal": 0.90 },
+      "ports": {
+        "inputs": [{ "medium": "Electricity", "role": "Input" }],
+        "outputs": [{ "medium": "Heat", "role": "Output" }]
+      },
+      "zone_hint": "学生区"
+    },
+    {
+      "idx": 5,
+      "device_id": "Chiller_A",
+      "device_name_cn": "压缩式制冷机A",
+      "device_name_en": "Chiller_A",
+      "category": "chiller",
+      "fuel_type": "electricity",
+      "capacity": { "base_capacity": 0.5, "capacity_unit": "MW", "max_units": 128 },
+      "cost": { "unit_cost": 600000, "unit_cost_unit": "CNY/MW", "lifespan_years": 10 },
+      "efficiency": { "COP": 4.0 },
+      "ports": {
+        "inputs": [{ "medium": "Electricity", "role": "Input" }],
+        "outputs": [{ "medium": "Cooling", "role": "Output" }]
+      },
+      "zone_hint": "学生区"
+    },
+    {
+      "idx": 6,
+      "device_id": "Chiller_B",
+      "device_name_cn": "压缩式制冷机B",
+      "device_name_en": "Chiller_B",
+      "category": "chiller",
+      "fuel_type": "electricity",
+      "capacity": { "base_capacity": 12.0, "capacity_unit": "MW", "max_units": 64 },
+      "cost": { "unit_cost": 800000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "COP": 5.0 },
+      "ports": {
+        "inputs": [{ "medium": "Electricity", "role": "Input" }],
+        "outputs": [{ "medium": "Cooling", "role": "Output" }]
+      },
+      "zone_hint": "教工区"
+    },
+    {
+      "idx": 7,
+      "device_id": "AbsorptionChiller",
+      "device_name_cn": "吸收式制冷机组",
+      "device_name_en": "AbsorptionChiller",
+      "category": "absorption",
+      "fuel_type": "heat",
+      "capacity": { "base_capacity": 12.0, "capacity_unit": "MW", "max_units": 64 },
+      "cost": { "unit_cost": 1000000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "COP": 0.8 },
+      "ports": {
+        "inputs": [{ "medium": "Heat", "role": "Input" }],
+        "outputs": [{ "medium": "Cooling", "role": "Output" }]
+      },
+      "zone_hint": "教学办公区"
+    },
+    {
+      "idx": 8,
+      "device_id": "GasBoiler",
+      "device_name_cn": "燃气锅炉",
+      "device_name_en": "GasBoiler",
+      "category": "boiler",
+      "fuel_type": "gas",
+      "capacity": { "base_capacity": 2.0, "capacity_unit": "MW", "max_units": 64 },
+      "cost": { "unit_cost": 400000, "unit_cost_unit": "CNY/MW", "lifespan_years": 30 },
+      "efficiency": { "thermal": 0.95 },
+      "ports": {
+        "inputs": [{ "medium": "Gas", "role": "Input" }],
+        "outputs": [{ "medium": "Heat", "role": "Output" }]
+      },
+      "zone_hint": "教学办公区"
+    },
+    {
+      "idx": 9,
+      "device_id": "GSHP_A",
+      "device_name_cn": "热泵A",
+      "device_name_en": "GSHP_A",
+      "category": "heat_pump",
+      "fuel_type": "electricity",
+      "capacity": { "base_capacity": 2.0, "capacity_unit": "MW", "max_units": 128 },
+      "cost": { "unit_cost": 3800000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "COP": 5.0 },
+      "ports": {
+        "inputs": [{ "medium": "Electricity", "role": "Input" }],
+        "outputs": [{ "medium": "Heat", "role": "Output" }]
+      },
+      "zone_hint": "教工区"
+    },
+    {
+      "idx": 10,
+      "device_id": "GSHP_B",
+      "device_name_cn": "热泵B",
+      "device_name_en": "GSHP_B",
+      "category": "heat_pump",
+      "fuel_type": "electricity",
+      "capacity": { "base_capacity": 10.0, "capacity_unit": "MW", "max_units": 64 },
+      "cost": { "unit_cost": 3500000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "COP": 6.0 },
+      "ports": {
+        "inputs": [{ "medium": "Electricity", "role": "Input" }],
+        "outputs": [{ "medium": "Heat", "role": "Output" }]
+      },
+      "zone_hint": "学生区"
+    },
+    {
+      "idx": 11,
+      "device_id": "BatteryStorage",
+      "device_name_cn": "电储能",
+      "device_name_en": "BatteryStorage",
+      "category": "storage",
+      "fuel_type": null,
+      "capacity": { "base_capacity": 2.0, "capacity_unit": "MWh", "max_units": 128 },
+      "cost": { "unit_cost": 4000000, "unit_cost_unit": "CNY/MWh", "lifespan_years": 10 },
+      "efficiency": { "charge": 0.92, "discharge": 0.92, "roundtrip": 0.85 },
+      "ports": {
+        "inputs": [{ "medium": "Electricity", "role": "Input", "use": "Charge" }],
+        "outputs": [{ "medium": "Electricity", "role": "Output", "use": "Discharge" }]
+      },
+      "zone_hint": "共用"
+    },
+    {
+      "idx": 12,
+      "device_id": "ThermalStorage",
+      "device_name_cn": "热储能",
+      "device_name_en": "ThermalStorage",
+      "category": "storage",
+      "fuel_type": null,
+      "capacity": { "base_capacity": 40.0, "capacity_unit": "MWh", "max_units": 64 },
+      "cost": { "unit_cost": 90000, "unit_cost_unit": "CNY/MWh", "lifespan_years": 20 },
+      "efficiency": { "charge": 0.95, "discharge": 0.95, "roundtrip": 0.90 },
+      "ports": {
+        "inputs": [{ "medium": "Heat", "role": "Input", "use": "Charge" }],
+        "outputs": [{ "medium": "Heat", "role": "Output", "use": "Discharge" }]
+      },
+      "zone_hint": "共用"
+    },
+    {
+      "idx": 13,
+      "device_id": "ColdStorage",
+      "device_name_cn": "冷储能",
+      "device_name_en": "ColdStorage",
+      "category": "storage",
+      "fuel_type": null,
+      "capacity": { "base_capacity": 40.0, "capacity_unit": "MWh", "max_units": 64 },
+      "cost": { "unit_cost": 90000, "unit_cost_unit": "CNY/MWh", "lifespan_years": 20 },
+      "efficiency": { "charge": 0.95, "discharge": 0.95, "roundtrip": 0.90 },
+      "ports": {
+        "inputs": [{ "medium": "Cooling", "role": "Input", "use": "Charge" }],
+        "outputs": [{ "medium": "Cooling", "role": "Output", "use": "Discharge" }]
+      },
+      "zone_hint": "共用"
+    },
+    {
+      "idx": 14,
+      "device_id": "WindTurbine",
+      "device_name_cn": "风电",
+      "device_name_en": "WindTurbine",
+      "category": "renewable",
+      "fuel_type": null,
+      "capacity": { "base_capacity": 0.482, "capacity_unit": "MW", "max_units": 4096 },
+      "cost": { "unit_cost": 6000000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "generation": 1.0 },
+      "ports": {
+        "inputs": [],
+        "outputs": [{ "medium": "Electricity", "role": "Output" }]
+      },
+      "zone_hint": "教学办公区"
+    },
+    {
+      "idx": 15,
+      "device_id": "PV",
+      "device_name_cn": "光伏",
+      "device_name_en": "PV",
+      "category": "renewable",
+      "fuel_type": null,
+      "capacity": { "base_capacity": 0.356, "capacity_unit": "MW", "max_units": 4096 },
+      "cost": { "unit_cost": 5000000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "generation": 1.0 },
+      "ports": {
+        "inputs": [],
+        "outputs": [{ "medium": "Electricity", "role": "Output" }]
+      },
+      "zone_hint": "学生区"
+    },
+    {
+      "idx": 16,
+      "device_id": "P2G",
+      "device_name_cn": "电制气",
+      "device_name_en": "P2G",
+      "category": "converter",
+      "fuel_type": "electricity",
+      "capacity": { "base_capacity": 0.5, "capacity_unit": "MW", "max_units": 64 },
+      "cost": { "unit_cost": 100000, "unit_cost_unit": "CNY/MW", "lifespan_years": 10 },
+      "efficiency": { "conversion": 0.40 },
+      "ports": {
+        "inputs": [{ "medium": "Electricity", "role": "Input" }],
+        "outputs": [{ "medium": "Gas", "role": "Output" }]
+      },
+      "zone_hint": "学生区"
+    },
+    {
+      "idx": 17,
+      "device_id": "GasTurbine",
+      "device_name_cn": "燃气轮机",
+      "device_name_en": "GasTurbine",
+      "category": "generator",
+      "fuel_type": "gas",
+      "capacity": { "base_capacity": 5.0, "capacity_unit": "MW", "max_units": 32 },
+      "cost": { "unit_cost": 600000, "unit_cost_unit": "CNY/MW", "lifespan_years": 20 },
+      "efficiency": { "electric": 0.70 },
+      "ports": {
+        "inputs": [{ "medium": "Gas", "role": "Input" }],
+        "outputs": [{ "medium": "Electricity", "role": "Output" }]
+      },
+      "zone_hint": "教工区"
+    },
+    {
+      "idx": 18,
+      "device_id": "CCHP",
+      "device_name_cn": "冷热电联供",
+      "device_name_en": "CCHP",
+      "category": "trigeneration",
+      "fuel_type": "gas",
+      "capacity": { "base_capacity": 3.0, "capacity_unit": "MW", "max_units": 32 },
+      "cost": { "unit_cost": 4000000, "unit_cost_unit": "CNY/MW", "lifespan_years": 30 },
+      "efficiency": { "electric": 0.40, "thermal": 0.30, "cooling": 0.30 },
+      "ports": {
+        "inputs": [{ "medium": "Gas", "role": "Input" }],
+        "outputs": [
+          { "medium": "Electricity", "role": "Output" },
+          { "medium": "Heat", "role": "Output" },
+          { "medium": "Cooling", "role": "Output" }
+        ]
+      },
+      "zone_hint": "教学办公区"
+    }
+  ],
+  "zone_constraints": {
+    "strict": true,
+    "zones": {
+      "student_zone": {
+        "name": "学生区",
+        "allowed_device_ids": ["ElectricBoiler", "Chiller_A", "GSHP_B", "PV", "P2G"]
+      },
+      "faculty_zone": {
+        "name": "教工区",
+        "allowed_device_ids": ["CHP_B", "ICE", "Chiller_B", "GSHP_A", "GasTurbine"]
+      },
+      "teaching_zone": {
+        "name": "教学办公区",
+        "allowed_device_ids": ["CHP_A", "AbsorptionChiller", "GasBoiler", "WindTurbine", "CCHP"]
+      }
+    },
+    "storage_policy": "BatteryStorage/ThermalStorage/ColdStorage 为区域内设备，可在任一子区域部署，但禁止跨区共享与跨区连线。"
+  },
+  "unit_conversions": {
+    "gas_m3_to_MWh": 0.01,
+    "gas_m3_to_kWh": 10,
+    "gas_m3_to_kJ": 36000
+  },
+  "notes": [
+    "zone_hint 仅为当前数据中设备所属区域的提示，不作为硬约束。",
+    "储能设备端口为同介质输入/输出，分别代表充电与放电方向。",
+    "设备容量允许为 0，表示该设备被剔除（无固定成本假设）。"
+  ]
+}

@@ -1,0 +1,23 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=5mm,
+    box/.style={draw, rounded corners, align=center, minimum width=22mm, minimum height=8mm},
+    arrow/.style={-Latex, thick}
+]
+\node[box] (A) {数据规范化\\与口径冻结};
+\node[box, right=of A] (B) {双层模型\\建构};
+\node[box, right=of B] (C) {碳税对齐\\与单层化};
+\node[box, right=of C] (D) {Monolithic\\MILP 求解};
+\node[box, right=of D] (E) {平台导出\\与 OJ 复算};
+\node[box, right=of E] (F) {一致性校验\\与扩展分析};
+
+\draw[arrow] (A) -- (B);
+\draw[arrow] (B) -- (C);
+\draw[arrow] (C) -- (D);
+\draw[arrow] (D) -- (E);
+\draw[arrow] (E) -- (F);
+\end{tikzpicture}
+\caption{研究与验证流程示意}
+\label{fig:workflow}
+\end{figure}

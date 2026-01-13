@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.pytest_cache/
+
+# Env
+.venv/
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs
+runs/
+output/
+logs/
+*.log
+docs/final_report/*.aux
+docs/final_report/*.fdb_latexmk
+docs/final_report/*.fls
+docs/final_report/*.pdf
+docs/final_report/*.synctex.gz
+docs/final_report/missfont.log
+
+# Temporary
+*.tmp
+*.swp

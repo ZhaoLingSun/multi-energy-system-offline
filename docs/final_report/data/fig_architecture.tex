@@ -1,0 +1,21 @@
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    node distance=8mm,
+    box/.style={draw, rounded corners, align=center, minimum width=24mm, minimum height=9mm},
+    arrow/.style={-Latex, thick}
+]
+\node[box] (A) {原始数据读取};
+\node[box, right=of A] (B) {run\_full\_milp\\建模求解};
+\node[box, right=of B] (C) {平台/OJ\\导出};
+\node[box, right=of C] (D) {OJ 评分\\复算};
+\node[box, right=of D] (E) {平台一致性\\验证};
+
+\draw[arrow] (A) -- (B);
+\draw[arrow] (B) -- (C);
+\draw[arrow] (C) -- (D);
+\draw[arrow] (D) -- (E);
+\end{tikzpicture}
+\caption{工程模块与数据流示意}
+\label{fig:architecture}
+\end{figure}

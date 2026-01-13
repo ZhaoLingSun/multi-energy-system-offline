@@ -1,0 +1,11 @@
+{
+  "day": 5,
+  "year": 2024,
+  "status": "success",
+  "total_cost": 24073.850233115307,
+  "total_grid_purchase": 272.0744983960392,
+  "total_gas_purchase": 118.05062953843613,
+  "total_load_shed": 0.0,
+  "solve_time_sec": 0.2373878963513013,
+  "hourly": []
+}

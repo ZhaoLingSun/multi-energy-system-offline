@@ -1,0 +1,7 @@
+\section{工程实现与软件架构}
+
+工程实现围绕“模型—求解—导出—复算”四个模块构建。核心入口为 \path{python/scripts/run_full_milp.py}，调度模型为 \path{python/meos/dispatch/zonal_dispatcher.py}，OJ 导出由 \path{python/meos/export/oj_exporter.py} 实现，评分复算由 \path{python/scripts/score_oj_csv.py} 完成。平台 Excel 转写与复算由 \path{python/scripts/verify_platform_export.py} 固化，确保导出与评分在统一口径下可复现。
+
+图~\ref{fig:architecture} 展示工程模块与数据流结构。
+
+\input{data/fig_architecture}

@@ -1,0 +1,116 @@
+{
+  "top_level": {
+    "group_name": "顶层外部能源输入配置",
+    "description": "主干网络外部源（火电机组与天然气源）的运行参数设定",
+    "sources": [
+      {
+        "id": "thermal_gen_1",
+        "name": "火电机组1",
+        "type": "Thermal_Generator",
+        "connection_node": "电力节点1",
+        "parameters": {
+          "max_output": 1000,
+          "min_output": 0,
+          "generation_cost": 2000,
+          "ramp_up_rate": 50,
+          "ramp_down_rate": 50,
+          "carbon_emission_factor": 0.8
+        },
+        "units": {
+          "max_output": "MW",
+          "generation_cost": "元/MWh",
+          "carbon_emission_factor": "tCO2/MWh"
+        }
+      },
+      {
+        "id": "thermal_gen_2",
+        "name": "火电机组2",
+        "type": "Thermal_Generator",
+        "connection_node": "电力节点3",
+        "parameters": {
+          "max_output": 1000,
+          "min_output": 0,
+          "generation_cost": 2000,
+          "ramp_up_rate": 50,
+          "ramp_down_rate": 50,
+          "carbon_emission_factor": 0.8
+        }
+      },
+      {
+        "id": "thermal_gen_3",
+        "name": "火电机组3",
+        "type": "Thermal_Generator",
+        "connection_node": "电力节点2",
+        "parameters": {
+          "max_output": 1000,
+          "min_output": 0,
+          "generation_cost": 2000,
+          "ramp_up_rate": 50,
+          "ramp_down_rate": 50,
+          "carbon_emission_factor": 0.8
+        }
+      },
+      {
+        "id": "gas_source_1",
+        "name": "天然气源1",
+        "type": "Natural_Gas_Source",
+        "connection_node": "气网节点1",
+        "parameters": {
+          "max_output": 8000,
+          "min_output": 0,
+          "base_injection": 1000,
+          "generation_cost": 2.87,
+          "carbon_emission_factor": 0.002
+        },
+        "units": {
+          "max_output": "MW",
+          "generation_cost": "元/m3",
+          "carbon_emission_factor": "tCO2/m3"
+        },
+        "note": "天然气热值转换: 1m3 = 0.01 MWh"
+      }
+    ]
+  },
+  "zones": {
+    "student_zone": {
+      "name": "学生区",
+      "devices": [
+        {"id": "pv_1", "name": "分布式光伏", "type": "Renewable", "capacity": 500, "unit": "MW"},
+        {"id": "p2g_1", "name": "电制气", "type": "P2G", "max_input": 142, "efficiency": 0.4},
+        {"id": "chiller_a", "name": "压缩式制冷机A", "type": "Chiller", "max_input": 630, "COP": 4},
+        {"id": "e_boiler", "name": "电锅炉", "type": "E_Boiler", "max_input": 100, "efficiency": 0.9},
+        {"id": "hp_b", "name": "热泵B", "type": "HeatPump", "max_input": 0, "COP": 6}
+      ]
+    },
+    "teaching_zone": {
+      "name": "教学办公区",
+      "devices": [
+        {"id": "wind_1", "name": "风机", "type": "Renewable", "capacity": 500, "unit": "MW"},
+        {"id": "chp_a", "name": "热电联产A", "type": "CHP", "max_input": 0, "eta_e": 0.22, "eta_h": 0.5},
+        {"id": "cchp", "name": "冷热电联供", "type": "CCHP", "max_input": 132, "eta_e": 0.4, "eta_h": 0.3, "eta_c": 0.3},
+        {"id": "absorption", "name": "吸收式制冷机", "type": "Absorption", "max_input": 40, "COP": 0.8},
+        {"id": "gas_boiler", "name": "燃气锅炉", "type": "GasBoiler", "max_input": 200, "efficiency": 0.95}
+      ]
+    },
+    "staff_zone": {
+      "name": "教工区",
+      "devices": [
+        {"id": "chp_b", "name": "热电联产B", "type": "CHP", "max_input": 0, "eta_e": 0.25, "eta_h": 0.55},
+        {"id": "hp_a", "name": "热泵A", "type": "HeatPump", "max_input": 400, "COP": 5},
+        {"id": "chiller_b", "name": "压缩式制冷机B", "type": "Chiller", "max_input": 20, "COP": 5},
+        {"id": "gas_turbine", "name": "燃气轮机", "type": "GasTurbine", "max_input": 29, "efficiency": 0.7},
+        {"id": "ice", "name": "内燃机", "type": "ICE", "max_input": 0, "eta_e": 0.35, "eta_h": 0.5}
+      ]
+    }
+  },
+  "constraints": {
+    "thermal_cost": 2000,
+    "thermal_cost_unit": "元/MWh",
+    "gas_cost": 2.87,
+    "gas_cost_unit": "元/m3",
+    "gas_to_MWh": 0.01,
+    "load_shedding_penalty": 500000,
+    "carbon_threshold": 100000,
+    "carbon_price": 600
+  }
+}

@@ -1,0 +1,74 @@
+\section{数学模型与单层化推导}
+
+\subsection{运行约束与能量平衡}
+
+令 $t$ 表示小时索引，$z$ 表示区域，$s$ 表示储能类型。电、热、冷系统满足能量平衡
+\[
+\sum_i P^{sup}_{i,t,z} + P^{grid}_{t,z} = P^{dem}_{t,z} + P^{shed}_{t,z}.
+\]
+设备出力满足容量约束
+\[
+0 \le P_{i,t,z} \le C_i(y).
+\]
+电网采用 DC 潮流近似
+\[
+F_{ij,t}=B_{ij}(\theta_{i,t}-\theta_{j,t}),\qquad |F_{ij,t}|\le F_{ij}^{max}.
+\]
+
+\subsection{储能动力学与日内闭环}
+
+储能状态满足
+\[
+SOC_{t+1,z,s}=SOC_{t,z,s}+\eta_{ch,s}P^{ch}_{t,z,s}-\frac{1}{\eta_{dis,s}}P^{dis}_{t,z,s},
+\]
+并采用日内闭环约束 $SOC_{d,0,z,s}=SOC_{d,24,z,s}$。电储能效率取 $0.92$，热/冷储能效率取 $0.95$，SOC 下限与上限分别为 $0$ 与 $1$。该设定与平台逐日求解一致，同时允许跨日 SOC 跳变。
+
+\subsection{成本、排放与评分}
+
+年度总成本由年化投资、运行成本与碳惩罚构成
+\[
+C_{total} = C_{CAP} + C_{OP} + C_{Carbon}.
+\]
+碳惩罚为
+\[
+C_{Carbon}=600\cdot\max(0, E_{total}-100000),
+\]
+其中
+\[
+E_{total}=\sum_t\big(EF_e(t)\,P_{ele}(t)+EF_g(t)\,G_{m^3}(t)\big).
+\]
+OJ 评分采用 Logistic 映射
+\[
+Score = \frac{100}{1+\exp\big(\frac{C_{total}/10000 - x_0}{k}\big)},\qquad x_0=100000,\ k=15000.
+\]
+
+\subsection{双层模型与对齐价推导}
+
+原始结构为“规划-运行”双层模型，上层以真实价格与碳惩罚为目标，下层以引导电价/气价求解运行调度。若在固定 Plan18 条件下满足“碳阈值必超标”，则碳惩罚恒处于线性区。记 $EF_g^{MWh}=EF_g/0.01$，则
+\[
+C_{OP}^{true}(x)+C_{Carbon} = \sum_t \big((\pi_e^{true}+600EF_e)P_{ele}+(\pi_g^{true}+600EF_g^{MWh})G_{buy}\big)+C_{shed}+\text{常数}.
+\]
+
+由此定义对齐价
+\[
+\pi_e^{align}(t)=\pi_e^{true}(t)+600EF_e(t),\qquad
+\pi_g^{align}(t)=\pi_g^{true}(t)+600EF_g^{MWh}(t),
+\]
+使得下层调度目标与上层评分目标一致，双层问题退化为单层优化。其物理含义是将碳惩罚转化为逐小时边际碳税，直接叠加在电/气单价上，从而在运行层面内生地实现“真实成本最优”。
+
+\subsection{引导电价/气价处理与输出单位}
+
+引导电价与气价由评分口径与碳因子直接构造，对齐后的气价在内部计算中以 MWh 口径表示，但平台输入要求元/m$^3$，因此导出时需转换
+\[
+\pi_g^{align,m^3}(t)=\frac{\pi_g^{align,MWh}(t)}{0.01}.
+\]
+该转换逻辑在导出模块中固化，保证平台侧输入单位一致。
+
+\subsection{单层 MILP 与分段碳惩罚}
+
+最终单层 MILP 的目标为
+\[
+\min\ C_{CAP}(y)+\sum_{t=1}^{8760}\Big(\pi_e^{align}(t)P_{ele}(t)+\pi_g^{align}(t)G_{buy}(t)+C_{shed}L_{shed}(t)\Big).
+\]
+
+当碳阈值可能被满足时，碳惩罚为分段函数。本文通过“松弛区/罚金区”两类 MILP 分别求解并取最优值，从而保证全局最优。该策略在碳阈值调整实验中得到验证。

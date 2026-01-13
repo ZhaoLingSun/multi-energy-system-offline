@@ -1,0 +1,50 @@
+% !TEX program = xelatex
+\documentclass[UTF8,fontset=none]{ctexart}
+
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros}
+\setmonofont{Latin Modern Mono}
+\setCJKmainfont[AutoFakeBold=2.0, AutoFakeSlant=0.2]{AR PL UMing CN}
+\setCJKsansfont[AutoFakeBold=2.0, AutoFakeSlant=0.2]{Droid Sans Fallback}
+\setCJKmonofont[AutoFakeBold=2.0, AutoFakeSlant=0.2]{Droid Sans Fallback}
+
+\graphicspath{{figure/}}
+
+\title{课程大作业最终报告：校园综合能源系统规划与运行优化}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\input{data/abstract}
+
+\input{data/fig_workflow}
+\input{data/fig_cost_breakdown}
+
+\input{data/introduction}
+\input{data/data_spec}
+\input{data/device_plan}
+\input{data/model}
+\input{data/solving}
+\input{data/implementation}
+\input{data/validation}
+\input{data/results}
+\input{data/thought_questions}
+\input{data/conclusion}
+\input{data/appendix}
+
+\end{document}

@@ -1,0 +1,266 @@
+# Device Catalog - 设备目录
+#
+# 本文件定义了所有设备的基准容量、效率参数和约束。
+# 用于 Plan18 → 实际容量转换。
+#
+# 重要说明：
+# - base_capacity: 单台设备的基准容量（MW 或 MWh）
+# - max_units: 最大可安装台数
+# - efficiency: 设备效率参数
+# - 实际容量 = plan18_value * base_capacity
+
+device_catalog:
+  version: "1.0"
+  frozen_date: null  # 待冻结
+  
+  devices:
+    # 1. 热电联产A (教学办公区)
+    - idx: 1
+      device_id: "CHP_A"
+      device_name: "热电联产A"
+      base_capacity: 2.0  # MW (输入侧)
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 8500000  # 850万元/MW
+      lifespan: 30
+      efficiency:
+        electric: 0.22
+        thermal: 0.50
+      fuel_type: "gas"
+      
+    # 2. 热电联产B (教工区) - 基准容量已更新为8MW (大作业内容(2).pdf)
+    - idx: 2
+      device_id: "CHP_B"
+      device_name: "热电联产B"
+      base_capacity: 8.0  # MW (原2MW, 更新为8MW)
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 6000000  # 600万元/MW
+      lifespan: 30
+      efficiency:
+        electric: 0.25
+        thermal: 0.55
+      fuel_type: "gas"
+      
+    # 3. 内燃机 (教工区) - 基准容量已更新为10MW (大作业内容(2).pdf)
+    - idx: 3
+      device_id: "ICE"
+      device_name: "内燃机"
+      base_capacity: 10.0  # MW (原8MW, 更新为10MW)
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 4400000  # 440万元/MW
+      lifespan: 30
+      efficiency:
+        electric: 0.35
+        thermal: 0.50
+      fuel_type: "gas"
+      
+    # 4. 电锅炉 (学生区)
+    - idx: 4
+      device_id: "ElectricBoiler"
+      device_name: "电锅炉"
+      base_capacity: 2.0  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 600000  # 60万元/MW
+      lifespan: 20
+      efficiency:
+        thermal: 0.90
+      fuel_type: "electricity"
+      
+    # 5. 压缩式制冷机A (学生区)
+    - idx: 5
+      device_id: "Chiller_A"
+      device_name: "压缩式制冷机A"
+      base_capacity: 0.5  # MW (输入侧)
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 600000  # 60万元/MW
+      lifespan: 10
+      efficiency:
+        COP: 4.0
+      fuel_type: "electricity"
+      
+    # 6. 压缩式制冷机B (教工区) - 基准容量已更新为12MW (大作业内容(2).pdf)
+    - idx: 6
+      device_id: "Chiller_B"
+      device_name: "压缩式制冷机B"
+      base_capacity: 12.0  # MW (原4MW, 更新为12MW)
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 800000  # 80万元/MW
+      lifespan: 20
+      efficiency:
+        COP: 5.0
+      fuel_type: "electricity"
+      
+    # 7. 吸收式制冷机组 (教学办公区) - 基准容量已更新为12MW (大作业内容(2).pdf)
+    - idx: 7
+      device_id: "AbsorptionChiller"
+      device_name: "吸收式制冷机组"
+      base_capacity: 12.0  # MW (原4MW, 更新为12MW)
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 1000000  # 100万元/MW
+      lifespan: 20
+      efficiency:
+        COP: 0.8
+      fuel_type: "heat"
+      
+    # 8. 燃气锅炉 (教学办公区)
+    - idx: 8
+      device_id: "GasBoiler"
+      device_name: "燃气锅炉"
+      base_capacity: 2.0  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 400000  # 40万元/MW
+      lifespan: 30
+      efficiency:
+        thermal: 0.95
+      fuel_type: "gas"
+      
+    # 9. 热泵A (教工区)
+    - idx: 9
+      device_id: "GSHP_A"
+      device_name: "热泵A"
+      base_capacity: 2.0  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 3800000  # 380万元/MW
+      lifespan: 20
+      efficiency:
+        COP: 5.0
+      fuel_type: "electricity"
+      
+    # 10. 热泵B (学生区) - 基准容量已更新为10MW (大作业内容(2).pdf)
+    - idx: 10
+      device_id: "GSHP_B"
+      device_name: "热泵B"
+      base_capacity: 10.0  # MW (原2MW, 更新为10MW)
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 3500000  # 350万元/MW
+      lifespan: 20
+      efficiency:
+        COP: 6.0
+      fuel_type: "electricity"
+      
+    # 11. 电储能 (1MW/2MWh)
+    - idx: 11
+      device_id: "BatteryStorage"
+      device_name: "电储能"
+      base_capacity: 2.0  # MWh (能量容量)
+      capacity_unit: "MWh"
+      max_units: 4096
+      unit_cost: 4000000  # 400万元/MWh
+      lifespan: 10
+      efficiency:
+        charge: 0.92
+        discharge: 0.92
+        roundtrip: 0.85
+      fuel_type: null
+      
+    # 12. 热储能 (8MW/40MWh)
+    - idx: 12
+      device_id: "ThermalStorage"
+      device_name: "热储能"
+      base_capacity: 40.0  # MWh (能量容量)
+      capacity_unit: "MWh"
+      max_units: 4096
+      unit_cost: 90000  # 9万元/MWh
+      lifespan: 20
+      efficiency:
+        charge: 0.95
+        discharge: 0.95
+        roundtrip: 0.90
+      fuel_type: null
+      
+    # 13. 冷储能 (8MW/40MWh)
+    - idx: 13
+      device_id: "ColdStorage"
+      device_name: "冷储能"
+      base_capacity: 40.0  # MWh (能量容量)
+      capacity_unit: "MWh"
+      max_units: 4096
+      unit_cost: 90000  # 9万元/MWh
+      lifespan: 20
+      efficiency:
+        charge: 0.95
+        discharge: 0.95
+        roundtrip: 0.90
+      fuel_type: null
+      
+    # 14. 风电 (教学办公区)
+    - idx: 14
+      device_id: "WindTurbine"
+      device_name: "风电"
+      base_capacity: 0.482  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 6000000  # 600万元/MW
+      lifespan: 20
+      efficiency:
+        generation: 1.0
+      fuel_type: null
+      
+    # 15. 光伏 (学生区)
+    - idx: 15
+      device_id: "PV"
+      device_name: "光伏"
+      base_capacity: 0.356  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 5000000  # 500万元/MW
+      lifespan: 20
+      efficiency:
+        generation: 1.0
+      fuel_type: null
+      
+    # 16. 电制气 (学生区)
+    - idx: 16
+      device_id: "P2G"
+      device_name: "电制气"
+      base_capacity: 0.5  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 100000  # 10万元/MW
+      lifespan: 10
+      efficiency:
+        conversion: 0.40
+      fuel_type: "electricity"
+      
+    # 17. 燃气轮机 (教工区)
+    - idx: 17
+      device_id: "GasTurbine"
+      device_name: "燃气轮机"
+      base_capacity: 5.0  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 600000  # 60万元/MW
+      lifespan: 20
+      efficiency:
+        electric: 0.70
+      fuel_type: "gas"
+      
+    # 18. 冷热电联供 (教学办公区)
+    - idx: 18
+      device_id: "CCHP"
+      device_name: "冷热电联供"
+      base_capacity: 3.0  # MW
+      capacity_unit: "MW"
+      max_units: 4096
+      unit_cost: 4000000  # 400万元/MW
+      lifespan: 30
+      efficiency:
+        electric: 0.40
+        thermal: 0.30
+        cooling: 0.30
+      fuel_type: "gas"
+
+  # 校验规则
+  validation:
+    total_count: 18
+    all_base_capacity_positive: true
+    all_max_units_positive: true

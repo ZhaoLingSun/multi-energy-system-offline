@@ -1,0 +1,59 @@
+\section{思考题与扩展讨论}
+
+\subsection{建筑节能改造评估（思考题一）}
+
+建筑节能改造通过降低单位面积供热强度，从源头削减供热需求。设改造前后能耗强度分别为 $e_{before}=0.35$ GJ/m$^2$ 与 $e_{after}=0.11$ GJ/m$^2$，则热负荷缩放系数为 $s=e_{after}/e_{before}\approx0.3143$，改造后的热负荷序列为
+\[
+L_{heat}^{after}(t)=s\cdot L_{heat}^{before}(t),\quad t=1,\dots,8760.
+\]
+
+在该设定下重新求解全年规划与调度，得到如表~\ref{tab:q1_results} 所示的成本与排放变化。年度总成本下降 $6.81\times 10^7$ 元，排放减少 $2.79\times 10^4$ tCO$_2$，评分提升 $3.84$ 分。该结论表明，在既定能源价格与碳税结构下，需求侧节能可显著减少供热季燃气消耗与电力替代需求，从而形成稳定的经济与减排效益。
+
+\begin{table}[htbp]
+\centering
+\caption{建筑节能改造前后成本与排放对比}
+\label{tab:q1_results}
+\begin{tabular}{lrrrrr}
+\toprule
+场景 & $C_{total}$ & $C_{OP}$ & $C_{Carbon}$ & $E_{total}$ & Score \\
+\midrule
+基线（未改造） & $6.9236\times 10^8$ & $3.0901\times 10^8$ & $5.0516\times 10^7$ & $1.8419\times 10^5$ & 88.6044 \\
+改造后 & $6.2426\times 10^8$ & $2.7433\times 10^8$ & $3.3777\times 10^7$ & $1.5629\times 10^5$ & 92.4486 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{跨季节冷热联储（思考题二）}
+
+跨季节联储采用月尺度聚合模型，以全区共用储能形式刻画季节性热-冷能量搬移。月度能量平衡为
+\[
+Q_m^{buy}+Q_m^{dis}=Q_m^{dem}+Q_m^{ch},\quad m=1,\dots,12,
+\]
+储能状态转移为
+\[
+S_{m+1}=(1-\lambda)S_m+\eta_{ch}Q_m^{ch}-\frac{1}{\eta_{dis}}Q_m^{dis},\quad S_{13}=S_1.
+\]
+
+在 1000–10000 MWh 范围内扫描容量，成本改善为十万级量级，收益主要来自碳成本下降而非电价套利。图~\ref{fig:q2_seasonal} 给出了容量-总成本关系，显示在当前价格结构下跨季节联储仍处于边际效益区。
+
+\input{data/fig_q2_seasonal_storage}
+
+\subsection{管道线包等效储能（思考题三）}
+
+线包效应可视作气网等效储能。令 $D_t$ 为固定气体需求（来自主问题最优解），线包状态 $S_t$ 满足
+\[
+S_{t+1}=(1-\lambda)S_t+P_t^{buy}-D_t,\qquad 0\le S_t\le E_{cap},\qquad S_{T+1}=S_1.
+\]
+该模型仅优化购气时机，不改变设备调度，从而提供线包效益的上界估计。图~\ref{fig:q3_linepack} 表明当线包容量达到 24 小时平均需求时，购气成本节约约为 $2.92\times 10^7$ 元（约 23.7\%）。该结果体现短周期气量缓冲对价格波动具有显著经济价值。
+
+\input{data/fig_q3_linepack}
+
+\subsection{分区规划与线路扩容（思考题四）}
+
+线路容量在 200–1200 MW 范围内扫描，运行成本与碳成本几乎不变，扩容仅带来新增年化投资，因此总成本单调上升。图~\ref{fig:q4_line_capacity} 显示扩容后总成本的变化趋势，表明当前负荷与设备配置下线路容量不是系统瓶颈。
+
+\input{data/fig_q4_line_capacity}
+
+\subsection{碳阈值变化与分段求解验证}
+
+当碳阈值提升至 180000 tCO$_2$ 时，模型进入松弛区且松弛区解优于罚金区解。阈值扫描显示最低排放下限约为 $1.7608\times 10^5$ tCO$_2$，因此当阈值低于该值时，严格约束不可行，模型只能处于罚金区。该实验验证了分段求解策略的正确性，并说明当前题设阈值 100000 tCO$_2$ 必然超标，碳税对齐假设成立。

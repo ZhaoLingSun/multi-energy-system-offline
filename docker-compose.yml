@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  meos-offline:
+    build: .
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /opt/gurobi:/opt/gurobi
+    environment:
+      - GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic
+    command: ["python", "run_all.py", "--mip-gap", "0.1", "--days", "7", "--threads", "4", "--time-limit", "300"]

@@ -1,0 +1,283 @@
+# Search Space Configuration for Outer Loop Optimization
+# 外层优化搜索空间定义（阶段4）
+#
+# 说明：
+# - 设备无固定成本，允许容量=0 表示剔除该设备
+# - 容量为基准容量的整数倍
+# - 引导电价为 192 维倍率（季节×工作日/周末×24小时）
+
+metadata:
+  version: "2.0"
+  created: "2025-12-26"
+  description: "Plan18 设备容量搜索空间 + 192维小时引导价"
+
+search_space:
+  variables:
+    # =========================================================================
+    # 离散容量变量 (Plan18 设备)
+    # 基准容量与 max_units 参考 spec/device_catalog.yaml
+    # =========================================================================
+
+    - name: "chp_a_capacity"
+      plan18_idx: 1
+      unit: "MW"
+      base: 2.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 0
+      step_multiple: 1
+      description: "热电联产A容量（禁用）"
+
+    - name: "chp_b_capacity"
+      plan18_idx: 2
+      unit: "MW"
+      base: 8.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 0
+      step_multiple: 1
+      description: "热电联产B容量（禁用）"
+
+    - name: "ice_capacity"
+      plan18_idx: 3
+      unit: "MW"
+      base: 10.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 0
+      step_multiple: 1
+      description: "内燃机容量（禁用）"
+
+    - name: "electric_boiler_capacity"
+      plan18_idx: 4
+      unit: "MW"
+      base: 2.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 0
+      step_multiple: 1
+      description: "电锅炉容量（禁用）"
+
+    - name: "chiller_a_capacity"
+      plan18_idx: 5
+      unit: "MW"
+      base: 0.5
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "压缩式制冷机A容量"
+
+    - name: "chiller_b_capacity"
+      plan18_idx: 6
+      unit: "MW"
+      base: 12.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "压缩式制冷机B容量"
+
+    - name: "absorption_chiller_capacity"
+      plan18_idx: 7
+      unit: "MW"
+      base: 12.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "吸收式制冷机组容量"
+
+    - name: "gas_boiler_capacity"
+      plan18_idx: 8
+      unit: "MW"
+      base: 2.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "燃气锅炉容量（放松上限）"
+
+    - name: "gshp_a_capacity"
+      plan18_idx: 9
+      unit: "MW"
+      base: 2.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "地源热泵A容量"
+
+    - name: "gshp_b_capacity"
+      plan18_idx: 10
+      unit: "MW"
+      base: 10.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "地源热泵B容量"
+
+    - name: "battery_storage_capacity"
+      plan18_idx: 11
+      unit: "MWh"
+      base: 2.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 0
+      step_multiple: 1
+      description: "电储能容量（禁用）"
+
+    - name: "thermal_storage_capacity"
+      plan18_idx: 12
+      unit: "MWh"
+      base: 40.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "热储能容量"
+
+    - name: "cold_storage_capacity"
+      plan18_idx: 13
+      unit: "MWh"
+      base: 40.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "冷储能容量"
+
+    - name: "wind_capacity"
+      plan18_idx: 14
+      unit: "MW"
+      base: 1.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 500
+      step_multiple: 1
+      description: "风电装机容量（MW 直接值，上限 500）"
+
+    - name: "pv_capacity"
+      plan18_idx: 15
+      unit: "MW"
+      base: 1.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 500
+      step_multiple: 1
+      description: "光伏装机容量（MW 直接值，上限 500）"
+
+    - name: "p2g_capacity"
+      plan18_idx: 16
+      unit: "MW"
+      base: 0.5
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "电制气容量（放松上限）"
+
+    - name: "gas_turbine_capacity"
+      plan18_idx: 17
+      unit: "MW"
+      base: 5.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "燃气轮机容量（放松上限）"
+
+    - name: "cchp_capacity"
+      plan18_idx: 18
+      unit: "MW"
+      base: 3.0
+      type: "discrete_multiple"
+      min_multiple: 0
+      max_multiple: 4096
+      step_multiple: 1
+      description: "冷热电联供容量"
+
+    # =========================================================================
+    # 连续引导价倍率（192 维）
+    # 结构: 4季节 × 2日类型(工作日/周末) × 24小时
+    # 顺序: season(春/夏/秋/冬) → daytype(工作日/周末) → hour(0-23)
+    # =========================================================================
+
+    - name: "price_hourly_multiplier"
+      type: "continuous"
+      min: 0.6
+      max: 1.5
+      step: 0.02
+      shape: [4, 2, 24]
+      description: "192维小时倍率（季节×工作日/周末×24小时）"
+      guidance_only: true
+
+  # =========================================================================
+  # 约束条件（说明性）
+  # =========================================================================
+  constraints:
+    - name: "topology_fixed"
+      description: "顶层拓扑固定，不可修改"
+    - name: "zone_fixed"
+      description: "设备类型与区域固定，不允许跨区部署"
+    - name: "port_full_connectivity"
+      description: "区域内满足 Input→Output 且端子类型一致的端口对必须连接"
+    - name: "capacity_zero_allowed"
+      description: "允许容量=0 表示剔除设备"
+    - name: "discrete_multiple"
+      description: "容量必须为基准容量的整数倍"
+    - name: "no_fixed_cost"
+      description: "设备无固定成本"
+
+  # =========================================================================
+  # 搜索策略配置
+  # =========================================================================
+  strategy:
+    default: "random"
+    available:
+      - "grid"
+      - "random"
+      - "pso"
+      - "ga"
+    grid:
+      max_combinations: 10000
+      smoke_limit: 50
+    random:
+      default_samples: 1000
+      seed: 42
+    pso:
+      swarm_size: 30
+      max_iterations: 100
+      w: 0.7
+      c1: 1.5
+      c2: 1.5
+    ga:
+      population_size: 50
+      max_generations: 100
+      crossover_rate: 0.8
+      mutation_rate: 0.1
+
+# 预设配置（快速测试用）
+presets:
+  smoke:
+    description: "冒烟测试 - 极小搜索空间"
+    variables:
+      pv_capacity:
+        min_multiple: 4
+        max_multiple: 6
+      wind_capacity:
+        min_multiple: 4
+        max_multiple: 6
+      battery_storage_capacity:
+        min_multiple: 0
+        max_multiple: 0
+    max_evals: 50
+  quick:
+    description: "快速搜索 - 中等搜索空间"
+    max_evals: 500
+    time_budget: 3600
+  full:
+    description: "完整搜索 - 大搜索空间"
+    max_evals: 5000
+    time_budget: 28800

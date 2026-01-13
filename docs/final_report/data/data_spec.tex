@@ -1,0 +1,36 @@
+\section{数据与接口规范}
+
+本研究严格遵循 MEOS 平台输入输出接口与 OJ 评分文件规范，在数据处理环节贯彻单位一致、口径冻结与格式可逆三项原则。表~\ref{tab:data_spec} 汇总主要输入数据的类别、时间频率与单位口径。
+
+\begin{table}[htbp]
+\centering
+\caption{主要输入数据与单位口径}
+\label{tab:data_spec}
+\begin{tabularx}{\textwidth}{l >{\raggedright\arraybackslash}X c c >{\raggedright\arraybackslash}X}
+\toprule
+数据类别 & 文件示例 & 频率 & 单位口径 & 说明 \\
+\midrule
+电价 & \texttt{电源价格\_电.csv} & 8760 & 元/MWh & 日表展开为小时序列 \\
+气价 & \texttt{天然气价格.csv} & 8760 & 元/m$^3$ & 与气体能量口径转换一致 \\
+购电碳因子 & \texttt{购电碳排放因子.csv} & 8760 & tCO$_2$/MWh & 用于碳税对齐与评分 \\
+购气碳因子 & \texttt{购气碳排放因子.csv} & 8760 & tCO$_2$/m$^3$ & 与 m$^3$ 口径一致 \\
+风光出力 & \texttt{出力曲线\_风电.csv}、\texttt{出力曲线\_光伏.csv} & 8760 & 标幺 & 与 500 MW 额定容量折算 \\
+三类负荷 & \texttt{负荷曲线\_电/热/冷\_区域.csv} & 8760 & MW & 三分区负荷独立输入 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+气价与能量的换算采用固定系数 $1$ m$^3$ $=0.01$ MWh。购气成本在 m$^3$ 口径下为
+
+\[
+G_{m^3}(t)=\frac{G_{MWh}(t)}{0.01},\qquad
+C_{gas}=\sum_{t=1}^{8760} G_{m^3}(t)\,\pi_g^{true}(t).
+\]
+
+风光出力以额定容量 500 MW 进行折算，若输入为标幺 $\rho(t)\in[0,1]$，则
+
+\[
+P_{res}(t)=\rho(t)\,P_{rated},\qquad P_{rated}=500\,\text{MW}.
+\]
+
+平台输出侧遵循 MEOS 导出 Excel 与 OJ CSV 规范。导出结果经 \texttt{verify\_platform\_export.py} 转写为平台 CSV 与 OJ CSV，再用统一评分器 \texttt{score\_oj\_csv.py} 复算，保证口径一致。OJ 评分口径通过探针扰动冻结：在基准 CSV 上对单小时负荷与购电量施加微小扰动，验证评分变化与 Logistic 函数一致，从而确认评分输入、价格口径与碳惩罚的数值结构。

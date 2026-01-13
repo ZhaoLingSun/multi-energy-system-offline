@@ -1,0 +1,237 @@
+[
+  {
+    "system_info": {
+      "system_name": "顶层综合能源网络",
+      "description": "主干网络拓扑，定义子系统与主网的物理连接接口",
+      "topology_type": "Top_Level_Network"
+    },
+    "network_params": {
+      "electric": {
+        "line_reactance": 0.000281,
+        "line_capacity": 400,
+        "theta_min": -3.14,
+        "theta_max": 3.15
+      },
+      "gas": {
+        "pressure_min_MPa": 5,
+        "pressure_max_MPa": 100,
+        "pressure_base_MPa": 10
+      },
+      "heat": {
+        "capacity_MW": null
+      }
+    },
+    "nodes": [
+      {
+        "id": "elec_bus_1",
+        "name": "电力母线1",
+        "type": "Grid_Node",
+        "category": "Electricity_Bus"
+      },
+      {
+        "id": "elec_bus_2",
+        "name": "电力母线2",
+        "type": "Grid_Node",
+        "category": "Electricity_Bus"
+      },
+      {
+        "id": "elec_bus_3",
+        "name": "电力母线3",
+        "type": "Grid_Node",
+        "category": "Electricity_Bus"
+      },
+      {
+        "id": "thermal_gen_1",
+        "name": "火电机组1",
+        "type": "Source",
+        "category": "Thermal_Generator"
+      },
+      {
+        "id": "thermal_gen_2",
+        "name": "火电机组2",
+        "type": "Source",
+        "category": "Thermal_Generator"
+      },
+      {
+        "id": "thermal_gen_3",
+        "name": "火电机组3",
+        "type": "Source",
+        "category": "Thermal_Generator"
+      },
+      {
+        "id": "gas_source_1",
+        "name": "天然气源1",
+        "type": "Source",
+        "category": "Gas_Source"
+      },
+      {
+        "id": "gas_hub_1",
+        "name": "气网节点1",
+        "type": "Grid_Node",
+        "category": "Gas_Hub"
+      },
+      {
+        "id": "heat_hub_1",
+        "name": "热力节点1",
+        "type": "Grid_Node",
+        "category": "Heat_Hub"
+      },
+      {
+        "id": "student_zone",
+        "name": "学生区",
+        "type": "Subsystem",
+        "description": "光伏发电、电制气注入、热负荷消耗",
+        "ports": [
+          {"id": "p_e_in_1", "medium": "Electricity", "type": "Input", "node_ref": "elec_bus_1", "internal_ref": "elec_port_1"},
+          {"id": "p_e_out_1", "medium": "Electricity", "type": "Output", "node_ref": "elec_bus_1", "internal_ref": "elec_out_1"},
+          {"id": "p_g_out_1", "medium": "Gas", "type": "Output", "node_ref": "gas_hub_1", "internal_ref": "gas_out_1"},
+          {"id": "p_h_in_1", "medium": "Heat", "type": "Input", "node_ref": "heat_hub_1", "internal_ref": "heat_port_1"}
+        ]
+      },
+      {
+        "id": "faculty_zone",
+        "name": "教工区",
+        "type": "Subsystem",
+        "description": "燃气轮机自发自用、无外送能力",
+        "ports": [
+          {"id": "p_e_in_2", "medium": "Electricity", "type": "Input", "node_ref": "elec_bus_2", "internal_ref": "elec_port_2"},
+          {"id": "p_g_in_2", "medium": "Gas", "type": "Input", "node_ref": "gas_hub_1", "internal_ref": "gas_port_2"},
+          {"id": "p_h_in_2", "medium": "Heat", "type": "Input", "node_ref": "heat_hub_1", "internal_ref": "heat_port_2"}
+        ]
+      },
+      {
+        "id": "teaching_zone",
+        "name": "教学办公区",
+        "type": "Subsystem",
+        "description": "风电/CCHP上网、余热外送",
+        "ports": [
+          {"id": "p_e_in_3", "medium": "Electricity", "type": "Input", "node_ref": "elec_bus_3", "internal_ref": "elec_port_3"},
+          {"id": "p_e_out_3", "medium": "Electricity", "type": "Output", "node_ref": "elec_bus_3", "internal_ref": "elec_out_3"},
+          {"id": "p_g_in_3", "medium": "Gas", "type": "Input", "node_ref": "gas_hub_1", "internal_ref": "gas_port_3"},
+          {"id": "p_h_out_3", "medium": "Heat", "type": "Output", "node_ref": "heat_hub_1", "internal_ref": "heat_out_3"}
+        ]
+      }
+    ],
+    "links": [
+      { "source": "elec_bus_1", "target": "elec_bus_2", "medium": "Electricity", "flow_type": "Bidirectional", "category": "Transmission_Line" },
+      { "source": "elec_bus_2", "target": "elec_bus_3", "medium": "Electricity", "flow_type": "Bidirectional", "category": "Transmission_Line" },
+      { "source": "elec_bus_3", "target": "elec_bus_1", "medium": "Electricity", "flow_type": "Bidirectional", "category": "Transmission_Line" },
+      { "source": "thermal_gen_1", "target": "elec_bus_1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "thermal_gen_3", "target": "elec_bus_2", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "thermal_gen_2", "target": "elec_bus_3", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "gas_source_1", "target": "gas_hub_1", "medium": "Gas", "flow_type": "Unidirectional" },
+      { "source": "student_zone", "target": "gas_hub_1", "medium": "Gas", "flow_type": "Unidirectional", "note": "P2G注入" },
+      { "source": "gas_hub_1", "target": "faculty_zone", "medium": "Gas", "flow_type": "Unidirectional" },
+      { "source": "gas_hub_1", "target": "teaching_zone", "medium": "Gas", "flow_type": "Unidirectional" },
+      { "source": "teaching_zone", "target": "heat_hub_1", "medium": "Heat", "flow_type": "Unidirectional", "note": "热源输出" },
+      { "source": "heat_hub_1", "target": "student_zone", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "heat_hub_1", "target": "faculty_zone", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "elec_bus_1", "target": "student_zone", "medium": "Electricity", "flow_type": "Unidirectional", "note": "电网供电" },
+      { "source": "student_zone", "target": "elec_bus_1", "medium": "Electricity", "flow_type": "Unidirectional", "note": "光伏上网" },
+      { "source": "elec_bus_2", "target": "faculty_zone", "medium": "Electricity", "flow_type": "Unidirectional", "note": "电网供电(无回馈)" },
+      { "source": "elec_bus_3", "target": "teaching_zone", "medium": "Electricity", "flow_type": "Unidirectional", "note": "电网供电" },
+      { "source": "teaching_zone", "target": "elec_bus_3", "medium": "Electricity", "flow_type": "Unidirectional", "note": "风/CCHP上网" }
+    ]
+  },
+  {
+    "system_info": {
+      "system_name": "学生区",
+      "parent_id": "student_zone"
+    },
+    "nodes": [
+      { "id": "elec_port_1", "name": "电端口1", "type": "Source", "category": "Input_Port" },
+      { "id": "elec_out_1", "name": "电输出1", "type": "Sink", "category": "Output_Port" },
+      { "id": "gas_out_1", "name": "气输出1", "type": "Sink", "category": "Output_Port" },
+      { "id": "heat_port_1", "name": "热端口1", "type": "Source", "category": "Input_Port" },
+      { "id": "pv_1", "name": "分布式光伏1", "type": "Source", "category": "Renewable" },
+      { "id": "p2g_1", "name": "电制气1", "type": "Converter", "category": "Device" },
+      { "id": "boiler_1", "name": "电锅炉1", "type": "Converter", "category": "Device" },
+      { "id": "chiller_a1", "name": "压缩式制冷机A1", "type": "Converter", "category": "Device" },
+      { "id": "load_e1", "name": "电负荷1", "type": "Load" },
+      { "id": "load_h1", "name": "热负荷1", "type": "Load" },
+      { "id": "load_c1", "name": "冷负荷1", "type": "Load" }
+    ],
+    "links": [
+      {"source": "elec_port_1", "target": "elec_out_1", "medium": "Electricity", "flow_type": "Unidirectional"},
+      { "source": "elec_port_1", "target": "load_e1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "elec_port_1", "target": "p2g_1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "elec_port_1", "target": "boiler_1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "elec_port_1", "target": "chiller_a1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "pv_1", "target": "load_e1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "pv_1", "target": "elec_out_1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "pv_1", "target": "p2g_1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "pv_1", "target": "boiler_1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "pv_1", "target": "chiller_a1", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "p2g_1", "target": "gas_out_1", "medium": "Gas", "flow_type": "Unidirectional" },
+      { "source": "heat_port_1", "target": "load_h1", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "boiler_1", "target": "load_h1", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "chiller_a1", "target": "load_c1", "medium": "Cooling", "flow_type": "Unidirectional" }
+    ]
+  },
+  {
+    "system_info": {
+      "system_name": "教工区",
+      "parent_id": "faculty_zone"
+    },
+    "nodes": [
+      { "id": "elec_port_2", "name": "电端口2", "type": "Source", "category": "Input_Port" },
+      { "id": "gas_port_2", "name": "气端口2", "type": "Source", "category": "Input_Port" },
+      { "id": "heat_port_2", "name": "热端口2", "type": "Source", "category": "Input_Port" },
+      { "id": "gas_turbine_2", "name": "燃气轮机2", "type": "Converter", "category": "Device" },
+      { "id": "heat_pump_a2", "name": "热泵A2", "type": "Converter", "category": "Device" },
+      { "id": "chiller_b2", "name": "压缩式制冷机B2", "type": "Converter", "category": "Device" },
+      { "id": "load_e2", "name": "电负荷2", "type": "Load" },
+      { "id": "load_h2", "name": "热负荷2", "type": "Load" },
+      { "id": "load_c2", "name": "冷负荷2", "type": "Load" }
+    ],
+    "links": [
+      { "source": "elec_port_2", "target": "load_e2", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "elec_port_2", "target": "heat_pump_a2", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "elec_port_2", "target": "chiller_b2", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "gas_port_2", "target": "gas_turbine_2", "medium": "Gas", "flow_type": "Unidirectional" },
+      { "source": "gas_turbine_2", "target": "load_e2", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "gas_turbine_2", "target": "heat_pump_a2", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "gas_turbine_2", "target": "chiller_b2", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "heat_port_2", "target": "load_h2", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "heat_pump_a2", "target": "load_h2", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "chiller_b2", "target": "load_c2", "medium": "Cooling", "flow_type": "Unidirectional" }
+    ]
+  },
+  {
+    "system_info": {
+      "system_name": "教学办公区",
+      "parent_id": "teaching_zone"
+    },
+    "nodes": [
+      { "id": "elec_port_3", "name": "电端口3", "type": "Source", "category": "Input_Port" },
+      { "id": "elec_out_3", "name": "电输出3", "type": "Sink", "category": "Output_Port" },
+      { "id": "gas_port_3", "name": "气端口3", "type": "Source", "category": "Input_Port" },
+      { "id": "heat_out_3", "name": "热输出3", "type": "Sink", "category": "Output_Port" },
+      { "id": "wind_1", "name": "分布式风电1", "type": "Source", "category": "Renewable" },
+      { "id": "cchp_3", "name": "冷热电联供3", "type": "Converter", "category": "Device" },
+      { "id": "gas_boiler_3", "name": "燃气锅炉3", "type": "Converter", "category": "Device" },
+      { "id": "abs_chiller_3", "name": "吸收式制冷机3", "type": "Converter", "category": "Device" },
+      { "id": "load_e3", "name": "电负荷3", "type": "Load" },
+      { "id": "load_h3", "name": "热负荷3", "type": "Load" },
+      { "id": "load_c3", "name": "冷负荷3", "type": "Load" }
+    ],
+    "links": [
+      {"source": "elec_port_3", "target": "elec_out_3", "medium": "Electricity", "flow_type": "Unidirectional"},
+      { "source": "elec_port_3", "target": "load_e3", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "wind_1", "target": "load_e3", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "wind_1", "target": "elec_out_3", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "gas_port_3", "target": "cchp_3", "medium": "Gas", "flow_type": "Unidirectional" },
+      { "source": "gas_port_3", "target": "gas_boiler_3", "medium": "Gas", "flow_type": "Unidirectional" },
+      { "source": "cchp_3", "target": "load_e3", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "cchp_3", "target": "elec_out_3", "medium": "Electricity", "flow_type": "Unidirectional" },
+      { "source": "cchp_3", "target": "load_h3", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "cchp_3", "target": "heat_out_3", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "cchp_3", "target": "load_c3", "medium": "Cooling", "flow_type": "Unidirectional" },
+      { "source": "cchp_3", "target": "abs_chiller_3", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "gas_boiler_3", "target": "load_h3", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "gas_boiler_3", "target": "heat_out_3", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "gas_boiler_3", "target": "abs_chiller_3", "medium": "Heat", "flow_type": "Unidirectional" },
+      { "source": "abs_chiller_3", "target": "load_c3", "medium": "Cooling", "flow_type": "Unidirectional" }
+    ]
+  }
+]
