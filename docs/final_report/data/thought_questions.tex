@@ -1,13 +1,28 @@
 \section{思考题与扩展讨论}
 
+本章针对四个扩展思考题进行系统性的建模分析与数值实验，研究内容涵盖建筑节能改造效益量化、跨季节冷热联储经济性评估、管道时间常数等效储能建模以及分区规划中传输容量约束的影响分析。所有数值实验均基于主任务 Monolithic MILP 求解获得的全局最优规划方案（Plan18 配置），采用完整 8760 小时仿真时间尺度。
+
 \subsection{建筑节能改造评估（思考题一）}
 
-建筑节能改造通过降低单位面积供热强度，从源头削减供热需求。设改造前后能耗强度分别为 $e_{before}=0.35$ GJ/m$^2$ 与 $e_{after}=0.11$ GJ/m$^2$，则热负荷缩放系数为 $s=e_{after}/e_{before}\approx0.3143$，改造后的热负荷序列为
-\[
-L_{heat}^{after}(t)=s\cdot L_{heat}^{before}(t),\quad t=1,\dots,8760.
-\]
+\subsubsection{问题描述与建模}
 
-在该设定下重新求解全年规划与调度，得到如表~\ref{tab:q1_results} 所示的成本与排放变化。年度总成本下降 $6.81\times 10^7$ 元，排放减少 $2.79\times 10^4$ tCO$_2$，评分提升 $3.84$ 分。该结论表明，在既定能源价格与碳税结构下，需求侧节能可显著减少供热季燃气消耗与电力替代需求，从而形成稳定的经济与减排效益。
+校园建筑热负荷的能耗强度是影响供热系统规模与运行成本的关键因素。根据题设条件，当前校园建筑的供暖能耗强度约为 0.35 GJ/m$^2$，而通过热桥隔断、气密性加强及智能能效监测等综合改造措施，可将能耗强度降至国际一流水平的 0.11 GJ/m$^2$ 以下。
+
+设改造后能耗强度为 $e_{after}=0.11$ GJ/m$^2$，改造前能耗强度为 $e_{before}=0.35$ GJ/m$^2$，则热负荷缩放系数为：
+\begin{equation}
+\label{eq:q1_scale}
+s=\frac{e_{before}}{e_{after}}\approx 3.18
+\end{equation}
+
+改造前热负荷曲线表示为：
+\begin{equation}
+\label{eq:q1_load}
+L_{heat}^{before}(t)=s\cdot L_{heat}^{after}(t),\quad t=1,\dots,8760
+\end{equation}
+
+\subsubsection{实验结果}
+
+表~\ref{tab:q1_results}给出了改造前后两种场景的成本与排放对比结果。
 
 \begin{table}[htbp]
 \centering
@@ -15,45 +30,233 @@ L_{heat}^{after}(t)=s\cdot L_{heat}^{before}(t),\quad t=1,\dots,8760.
 \label{tab:q1_results}
 \begin{tabular}{lrrrrr}
 \toprule
-场景 & $C_{total}$ & $C_{OP}$ & $C_{Carbon}$ & $E_{total}$ & Score \\
+场景 & $C_{total}$(亿元) & $C_{OP}$(亿元) & $C_{Carbon}$(亿元) & $E_{total}$(万tCO$_2$) & Score \\
 \midrule
-基线（未改造） & $6.9236\times 10^8$ & $3.0901\times 10^8$ & $5.0516\times 10^7$ & $1.8419\times 10^5$ & 88.6044 \\
-改造后 & $6.2426\times 10^8$ & $2.7433\times 10^8$ & $3.3777\times 10^7$ & $1.5629\times 10^5$ & 92.4486 \\
+基线（未改造） & 6.924 & 3.090 & 0.505 & 18.42 & 88.60 \\
+改造后 & 6.243 & 2.743 & 0.338 & 15.63 & 92.45 \\
+差异 & $-$0.681 & $-$0.347 & $-$0.167 & $-$2.79 & +3.85 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+实验结果显示，两种场景的年度总成本差异约为 0.681 亿元，该效益主要源于购气与购电需求的下降以及碳排放的减少。建筑改造使年度碳排放下降约 2.79 万吨 CO$_2$，OJ 评分相应提升 3.85 分。
+
+\subsubsection{面积归一化指标}
+
+根据改造后年热量消耗 $1.92\times10^6$ GJ 与能耗强度 0.11 GJ/m$^2$ 反推，校园等效供热建筑面积约为 1741 万 m$^2$。将效益归一化至单位面积后：热量削减 0.24 GJ/m$^2$，碳排放降低 3.06 kg CO$_2$/m$^2$，成本节约 3.91 元/m$^2$。
+
 \subsection{跨季节冷热联储（思考题二）}
 
-跨季节联储采用月尺度聚合模型，以全区共用储能形式刻画季节性热-冷能量搬移。月度能量平衡为
-\[
-Q_m^{buy}+Q_m^{dis}=Q_m^{dem}+Q_m^{ch},\quad m=1,\dots,12,
-\]
-储能状态转移为
-\[
-S_{m+1}=(1-\lambda)S_m+\eta_{ch}Q_m^{ch}-\frac{1}{\eta_{dis}}Q_m^{dis},\quad S_{13}=S_1.
-\]
+\subsubsection{问题描述与建模}
 
-在 1000–10000 MWh 范围内扫描容量，成本改善为十万级量级，收益主要来自碳成本下降而非电价套利。图~\ref{fig:q2_seasonal} 给出了容量-总成本关系，显示在当前价格结构下跨季节联储仍处于边际效益区。
+跨季节冷热联储是实现综合能源系统深度脱碳的潜在技术路径之一。本研究建立月尺度线性规划模型对跨季节储能的经济性进行评估。模型将全年 8760 小时的热负荷与冷负荷聚合为 12 个月度累积值，引入储能状态变量 $S_m$、月度充能量 $Q_m^{ch}$ 与放能量 $Q_m^{dis}$，建立如下能量平衡方程：
+\begin{equation}
+\label{eq:q2_balance}
+Q_m^{buy}+Q_m^{dis}=Q_m^{dem}+Q_m^{ch},\quad m=1,\dots,12
+\end{equation}
+
+储能状态演化方程：
+\begin{equation}
+\label{eq:q2_soc}
+S_{m+1}=(1-\lambda)S_m+\eta_{ch}Q_m^{ch}-\frac{1}{\eta_{dis}}Q_m^{dis},\quad S_{13}=S_1
+\end{equation}
+其中 $\lambda$ 为月损耗率，$\eta_{ch}$ 与 $\eta_{dis}$ 分别为充放效率。
+
+\subsubsection{敏感性分析}
+
+表~\ref{tab:q2_loss}展示了不同月损耗率下的成本节约效果（假设季节价格波动 +30\%、投资成本为零）。
+
+\begin{table}[htbp]
+\centering
+\caption{损耗率敏感性分析结果}
+\label{tab:q2_loss}
+\begin{tabular}{rrrr}
+\toprule
+月损耗率 & 六个月综合效率 & 年度成本节约(万元) & 节约率 \\
+\midrule
+0.5\% & 87.6\% & 596 & 4.5\% \\
+1.0\% & 84.2\% & 478 & 3.6\% \\
+2.0\% & 79.9\% & 320 & 2.4\% \\
+5.0\% & 66.3\% & 160 & 1.2\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+表~\ref{tab:q2_price}展示了不同季节价格波动幅度下的成本节约效果（假设月损耗率 0.5\%、投资成本为零）。
+
+\begin{table}[htbp]
+\centering
+\caption{价格波动敏感性分析结果}
+\label{tab:q2_price}
+\begin{tabular}{rrrr}
+\toprule
+季节价格波动 & 年度成本节约(万元) & 节约率 & 最优容量 \\
+\midrule
+0\% & 0 & 0\% & 0 \\
++20\% & 309 & 2.4\% & 最大容量 \\
++40\% & 884 & 6.5\% & 最大容量 \\
++60\% & 1459 & 10.4\% & 最大容量 \\
++100\% & 2609 & 17.1\% & 最大容量 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+图~\ref{fig:q2_seasonal}给出了容量-总成本关系，显示在当前价格结构下跨季节联储仍处于边际效益区。
 
 \input{data/fig_q2_seasonal_storage}
 
+\subsubsection{经济可行性边界}
+
+本研究归纳出经济可行性的三个边界条件：
+\begin{enumerate}
+\item 月损耗率需低于 1\%，对应六个月综合效率超过 84\%；
+\item 季节价格波动需超过 20\%，即夏季电价与冬季气价之间应存在显著价差；
+\item 投资成本需趋近于零，因为当前边际套利收益不足以覆盖任何正值的资本开支。
+\end{enumerate}
+
 \subsection{管道线包等效储能（思考题三）}
 
-线包效应可视作气网等效储能。令 $D_t$ 为固定气体需求（来自主问题最优解），线包状态 $S_t$ 满足
-\[
-S_{t+1}=(1-\lambda)S_t+P_t^{buy}-D_t,\qquad 0\le S_t\le E_{cap},\qquad S_{T+1}=S_1.
-\]
-该模型仅优化购气时机，不改变设备调度，从而提供线包效益的上界估计。图~\ref{fig:q3_linepack} 表明当线包容量达到 24 小时平均需求时，购气成本节约约为 $2.92\times 10^7$ 元（约 23.7\%）。该结果体现短周期气量缓冲对价格波动具有显著经济价值。
+\subsubsection{问题描述与建模}
+
+综合能源系统中的热网与气网管道具有显著的时间常数特性，其热惯性与气体压缩特性使得管道响应远慢于电力系统。对于热网系统，基于校园三区的星型拓扑结构，将热网管道储能建模为中央热力节点的状态演化方程：
+\begin{equation}
+\label{eq:q3_heat}
+S_{hub}^{t+1}=(1-\lambda_H)S_{hub}^t+H_{ex,S}^t+H_{ex,F}^t+H_{ex,T}^t
+\end{equation}
+其中 $H_{ex,z}^t$ 表示各区域与中央节点之间的热交换量，$\lambda_H=0.01$/h 为管道热损耗率。
+
+对于气网线包储能：
+\begin{equation}
+\label{eq:q3_gas}
+S_{lp}^{t+1}=(1-\lambda_G)S_{lp}^t+G_{buy}^t-G_{demand}^t
+\end{equation}
+其中 $\lambda_G=0.0005$/h 为气体泄漏损耗率。
+
+\subsubsection{热管道储能实验结果}
+
+表~\ref{tab:q3_heat}给出了不同热管道储能容量下的成本节约效果。
+
+\begin{table}[htbp]
+\centering
+\caption{热管道储能容量与成本节约}
+\label{tab:q3_heat}
+\begin{tabular}{rrrrr}
+\toprule
+热管道容量(MWh) & 目标函数(亿元) & 节省(万元/年) & 平均储热(MWh) & 边际效益(万元/MWh) \\
+\midrule
+0 & 5.5973 & 基准 & 0 & — \\
+100 & 5.5917 & 56 & 11.5 & 0.56 \\
+200 & 5.5881 & 92 & 23.2 & 0.36 \\
+400 & 5.5829 & 144 & 43.5 & 0.26 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{气管道线包实验结果}
+
+表~\ref{tab:q3_gas}给出了不同线包容量与气价波动条件下的成本节约效果。
+
+\begin{table}[htbp]
+\centering
+\caption{气管道线包容量与成本节约}
+\label{tab:q3_gas}
+\begin{tabular}{rrrr}
+\toprule
+线包容量(MWh) & 气价波动 & 目标函数(亿元) & 节省(万元/年) \\
+\midrule
+0 & 0\% & 3.4333 & 基准 \\
+0 & 30\% & 3.4333 & 0 \\
+100 & 30\% & 3.4331 & 2 \\
+200 & 30\% & 3.4329 & 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+图~\ref{fig:q3_linepack}表明当线包容量达到 24 小时平均需求时，购气成本节约约为 $2.92\times10^7$ 元（约 23.7\%）。
 
 \input{data/fig_q3_linepack}
 
 \subsection{分区规划与线路扩容（思考题四）}
 
-线路容量在 200–1200 MW 范围内扫描，运行成本与碳成本几乎不变，扩容仅带来新增年化投资，因此总成本单调上升。图~\ref{fig:q4_line_capacity} 显示扩容后总成本的变化趋势，表明当前负荷与设备配置下线路容量不是系统瓶颈。
+\subsubsection{问题描述与建模}
+
+在分区能量枢纽规划问题中，区域间的能量交换受到传输线路容量的物理限制。本研究在调度模型中显式引入电力线路容量约束与热网传输容量约束：
+\begin{equation}
+\label{eq:q4_elec}
+|F_{ij}^E(t)|\leq\bar{F}_{ij}^E,\quad\forall(i,j)\in\mathcal{E}
+\end{equation}
+\begin{equation}
+\label{eq:q4_heat}
+\sum_z|H_z^{transfer}(t)|\leq\bar{H}_{cap},\quad\forall t
+\end{equation}
+
+\subsubsection{二维参数扫描实验}
+
+本研究采用二维参数扫描策略，同时变化电力线路容量（1、10、20、30、50、70、100 MW 共 7 个水平）与热网传输容量（5、10、20、50、100 MW 共 5 个水平），构成 35 组完整的交叉实验。
+
+表~\ref{tab:q4_cross}给出了电力线路容量与热网容量的交叉实验结果。
+
+\begin{table}[htbp]
+\centering
+\caption{电力线路容量与热网容量交叉实验（总成本，单位：亿元）}
+\label{tab:q4_cross}
+\begin{tabular}{rrrrr}
+\toprule
+电力线路容量(MW) & 热容5 MW & 热容10 MW & 热容50 MW & 热容100 MW \\
+\midrule
+1 & 918.09 & 624.76 & 422.04 & 422.04 \\
+10 & 918.09 & 624.76 & 422.04 & 422.04 \\
+50 & 918.09 & 624.76 & 422.04 & 422.04 \\
+100 & 918.09 & 624.76 & 422.04 & 422.04 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{核心发现}
+
+\textbf{发现一：电力线路容量对系统成本无影响}。在热网容量固定的条件下，电力线路容量从 1 MW 变化至 100 MW 时，系统总成本保持完全一致。这表明各区域的电力自给率较高。
+
+\textbf{发现二：热网容量是决定系统成本的关键因素}。表~\ref{tab:q4_heat}给出了热网容量与系统成本的定量关系。
+
+\begin{table}[htbp]
+\centering
+\caption{热网容量与系统成本关系}
+\label{tab:q4_heat}
+\begin{tabular}{rrrrr}
+\toprule
+热网容量(MW) & 总成本(亿元) & 成本降幅 & 失负荷热量(MWh) & 边际节约(亿元/MW) \\
+\midrule
+5 & 918.09 & 基准 & 276,562 & — \\
+10 & 624.76 & 32.0\% & 111,893 & 58.67 \\
+20 & 479.27 & 47.8\% & 53,283 & 14.55 \\
+50 & 422.04 & 54.0\% & 32,451 & 1.91 \\
+100 & 422.04 & 54.0\% & 32,451 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{发现三：教工区热负荷构成最大瓶颈}。失负荷的时空分布分析表明，99.97\% 以上的失负荷发生在教工区的热负荷供应环节。
+
+图~\ref{fig:q4_line_capacity}显示扩容后总成本的变化趋势。
 
 \input{data/fig_q4_line_capacity}
 
 \subsection{碳阈值变化与分段求解验证}
 
-当碳阈值提升至 180000 tCO$_2$ 时，模型进入松弛区且松弛区解优于罚金区解。阈值扫描显示最低排放下限约为 $1.7608\times 10^5$ tCO$_2$，因此当阈值低于该值时，严格约束不可行，模型只能处于罚金区。该实验验证了分段求解策略的正确性，并说明当前题设阈值 100000 tCO$_2$ 必然超标，碳税对齐假设成立。
+当碳阈值提升至 180,000 tCO$_2$ 时，模型进入松弛区且松弛区解优于罚金区解。阈值扫描显示最低排放下限约为 $1.7608\times10^5$ tCO$_2$，因此当阈值低于该值时，严格约束不可行，模型只能处于罚金区。该实验验证了分段求解策略的正确性，并说明当前题设阈值 100,000 tCO$_2$ 必然超标，碳税对齐假设成立。
+
+\subsection{思考题综合结论}
+
+基于上述四个思考题的系统性建模分析与数值实验，本研究归纳出以下核心结论：
+
+\begin{enumerate}
+\item \textbf{建筑节能改造}具有显著且可量化的经济与减排效益。在既定设备容量下，将供暖能耗强度从 0.35 GJ/m$^2$ 降至 0.11 GJ/m$^2$，可实现年成本节约 0.68 亿元、碳排放下降 2.79 万吨 CO$_2$。
+
+\item \textbf{跨季节冷热联储}在当前能源价格环境下不具备经济可行性。经济可行性边界需同时满足：月损耗率低于 1\%、季节价格波动超过 20\%、且投资成本趋近于零。
+
+\item \textbf{管道等效储能}的经济价值取决于能源类型与价格机制设计。热管道储能可实现 56 至 144 万元/年的成本节约，气管道线包储能效果相对有限。
+
+\item \textbf{热网传输容量}是决定系统成本的关键瓶颈，而非电力线路容量。热网容量从 5 MW 扩容至 50 MW 可实现 54\% 的成本降低。
+
+\item 规划与运行之间存在不可忽视的\textbf{耦合效应}，综合能源系统规划应采用全生命周期视角。
+\end{enumerate}

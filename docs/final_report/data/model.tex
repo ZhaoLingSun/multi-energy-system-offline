@@ -1,74 +1,310 @@
 \section{数学模型与单层化推导}
 
-\subsection{运行约束与能量平衡}
+本章首先建立综合能源系统规划与运行问题的完整数学模型，包括目标函数、决策变量、约束条件及符号说明；随后通过碳税对齐方法将原始双层优化问题严格等价地转化为单层混合整数线性规划。
 
-令 $t$ 表示小时索引，$z$ 表示区域，$s$ 表示储能类型。电、热、冷系统满足能量平衡
-\[
-\sum_i P^{sup}_{i,t,z} + P^{grid}_{t,z} = P^{dem}_{t,z} + P^{shed}_{t,z}.
-\]
-设备出力满足容量约束
-\[
-0 \le P_{i,t,z} \le C_i(y).
-\]
-电网采用 DC 潮流近似
-\[
-F_{ij,t}=B_{ij}(\theta_{i,t}-\theta_{j,t}),\qquad |F_{ij,t}|\le F_{ij}^{max}.
-\]
+\subsection{符号定义与决策变量}
+
+\subsubsection{集合与索引}
+
+表~\ref{tab:sets}给出模型中使用的主要集合与索引符号。
+
+\begin{table}[htbp]
+\centering
+\caption{集合与索引定义}
+\label{tab:sets}
+\begin{tabular}{cl}
+\toprule
+符号 & 定义 \\
+\midrule
+$\mathcal{T}$ & 时间集合，$\mathcal{T}=\{1,2,\ldots,8760\}$，对应全年小时 \\
+$\mathcal{Z}$ & 区域集合，$\mathcal{Z}=\{\text{学生区},\text{教工区},\text{教学办公区}\}$ \\
+$\mathcal{I}$ & 设备集合，涵盖 13 类设备 \\
+$\mathcal{S}$ & 储能类型集合，$\mathcal{S}=\{\text{热储能},\text{冷储能}\}$ \\
+$\mathcal{E}$ & 电力线路集合，$(i,j)\in\mathcal{E}$ 表示区域间输电线路 \\
+$t,z,i,s$ & 分别为时间、区域、设备、储能类型的索引 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{规划决策变量（上层）}
+
+\begin{table}[htbp]
+\centering
+\caption{规划决策变量}
+\label{tab:plan_vars}
+\begin{tabular}{cll}
+\toprule
+符号 & 定义 & 单位 \\
+\midrule
+$y_i$ & 设备 $i$ 的规划台数（整数） & 台 \\
+$C_i$ & 设备 $i$ 的总容量，$C_i = y_i \cdot C_i^{base}$ & MW 或 MWh \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{运行决策变量（下层）}
+
+\begin{table}[htbp]
+\centering
+\caption{运行决策变量}
+\label{tab:op_vars}
+\begin{tabular}{cll}
+\toprule
+符号 & 定义 & 单位 \\
+\midrule
+$P_{ele}(t)$ & 时刻 $t$ 从外部电网的购电功率 & MW \\
+$G_{buy}(t)$ & 时刻 $t$ 的购气量（能量口径） & MWh \\
+$G_{m^3}(t)$ & 时刻 $t$ 的购气量（体积口径），$G_{m^3}=G_{buy}/0.01$ & m$^3$ \\
+$P_{i,t,z}$ & 设备 $i$ 在时刻 $t$、区域 $z$ 的输出功率 & MW \\
+$P_{t,z,s}^{ch}$, $P_{t,z,s}^{dis}$ & 储能 $s$ 在时刻 $t$、区域 $z$ 的充/放能功率 & MW \\
+$SOC_{t,z,s}$ & 储能 $s$ 在时刻 $t$、区域 $z$ 的荷电状态 & MWh \\
+$L_{shed,t,z}^{e/h/c}$ & 时刻 $t$、区域 $z$ 的电/热/冷失负荷功率 & MW \\
+$F_{ij,t}$ & 线路 $(i,j)$ 在时刻 $t$ 的有功潮流 & MW \\
+$\theta_{z,t}$ & 区域 $z$ 在时刻 $t$ 的电压相角 & rad \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{主要参数}
+
+\begin{table}[htbp]
+\centering
+\caption{主要参数定义}
+\label{tab:params}
+\begin{tabular}{cll}
+\toprule
+符号 & 定义 & 单位 \\
+\midrule
+$\pi_e^{true}(t)$ & 时刻 $t$ 的真实电价 & 元/MWh \\
+$\pi_g^{true}(t)$ & 时刻 $t$ 的真实气价 & 元/MWh \\
+$EF_e(t)$ & 时刻 $t$ 的购电碳排放因子 & tCO$_2$/MWh \\
+$EF_g(t)$ & 时刻 $t$ 的购气碳排放因子 & tCO$_2$/m$^3$ \\
+$D_{t,z}^{e/h/c}$ & 时刻 $t$、区域 $z$ 的电/热/冷负荷需求 & MW \\
+$\eta_i^{e/h/c}$ & 设备 $i$ 的电/热/冷转换效率 & — \\
+$C_i^{inv}$ & 设备 $i$ 的单位投资成本 & 元/MW \\
+$C_{shed}$ & 失负荷惩罚系数，$C_{shed}=500000$ & 元/MWh \\
+$r$ & 贴现率，$r=0.04$ & — \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{目标函数}
+
+系统的年度总成本由年化投资成本、运行成本与碳排放惩罚三部分构成：
+\begin{equation}
+\label{eq:obj_total}
+\min \quad C_{total} = C_{CAP} + C_{OP} + C_{Carbon}
+\end{equation}
+
+\textbf{年化投资成本}采用等年值折算方法：
+\begin{equation}
+\label{eq:cap_cost}
+C_{CAP} = \sum_{i\in\mathcal{I}} \frac{r}{1-(1+r)^{-Y_i}} \cdot C_i^{inv} \cdot C_i
+\end{equation}
+
+\textbf{运行成本}包括购电成本、购气成本与失负荷惩罚：
+\begin{equation}
+\label{eq:op_cost}
+C_{OP} = \sum_{t\in\mathcal{T}}\Big[\pi_e^{true}(t)\cdot P_{ele}(t) + \pi_g^{true}(t)\cdot G_{buy}(t) + C_{shed}\sum_{z\in\mathcal{Z}}\big(L_{shed,t,z}^e + L_{shed,t,z}^h + L_{shed,t,z}^c\big)\Big]
+\end{equation}
+
+\textbf{碳排放惩罚}采用分段线性函数：
+\begin{equation}
+\label{eq:carbon_cost}
+C_{Carbon} = 600 \cdot \max\big(0,\, E_{total} - 100000\big)
+\end{equation}
+其中年度总碳排放量为：
+\begin{equation}
+\label{eq:emission}
+E_{total} = \sum_{t\in\mathcal{T}}\Big[EF_e(t)\cdot P_{ele}(t) + EF_g(t)\cdot G_{m^3}(t)\Big]
+\end{equation}
+
+\subsection{约束条件}
+
+\subsubsection{能量平衡约束}
+
+对于电力、热力与冷量三种能源形式，各区域在每个时刻均需满足供需平衡。
+
+\textbf{电力平衡}（$\forall t\in\mathcal{T},\, z\in\mathcal{Z}$）：
+\begin{equation}
+\label{eq:elec_balance}
+P_{ele,t,z} + \sum_{i\in\mathcal{I}_z^{gen}} P_{i,t,z}^e + P_{t,z,bat}^{dis} + \sum_{j:(j,z)\in\mathcal{E}} F_{jz,t} = D_{t,z}^e + \sum_{i\in\mathcal{I}_z^{con}} P_{i,t,z}^{in} + P_{t,z,bat}^{ch} + \sum_{j:(z,j)\in\mathcal{E}} F_{zj,t} + L_{shed,t,z}^e
+\end{equation}
+
+\textbf{热力平衡}（$\forall t\in\mathcal{T},\, z\in\mathcal{Z}$）：
+\begin{equation}
+\label{eq:heat_balance}
+\sum_{i\in\mathcal{I}_z^{heat}} P_{i,t,z}^h + P_{t,z,hs}^{dis} = D_{t,z}^h + P_{t,z,hs}^{ch} + L_{shed,t,z}^h
+\end{equation}
+
+\textbf{冷量平衡}（$\forall t\in\mathcal{T},\, z\in\mathcal{Z}$）：
+\begin{equation}
+\label{eq:cool_balance}
+\sum_{i\in\mathcal{I}_z^{cool}} P_{i,t,z}^c + P_{t,z,cs}^{dis} = D_{t,z}^c + P_{t,z,cs}^{ch} + L_{shed,t,z}^c
+\end{equation}
+
+\subsubsection{设备容量与出力约束}
+
+设备容量由规划变量决定：
+\begin{equation}
+\label{eq:capacity}
+C_i = y_i \cdot C_i^{base}, \qquad y_i \in \mathbb{Z}_{\ge 0}, \quad \forall i\in\mathcal{I}
+\end{equation}
+
+设备出力受容量约束：
+\begin{equation}
+\label{eq:output_limit}
+0 \le P_{i,t} \le C_i, \quad \forall t\in\mathcal{T},\, i\in\mathcal{I}
+\end{equation}
+
+\subsubsection{设备能量转换约束}
+
+\textbf{热电联产设备}（CHP/CCHP）的电热输出由燃气输入决定：
+\begin{equation}
+\label{eq:chp}
+P_{i,t}^e = \eta_i^e \cdot G_{i,t}^{in}, \qquad P_{i,t}^h = \eta_i^h \cdot G_{i,t}^{in}
+\end{equation}
+
+\textbf{燃气锅炉}的热输出与燃气输入关系：
+\begin{equation}
+\label{eq:boiler}
+P_{i,t}^h = \eta_i^h \cdot G_{i,t}^{in}
+\end{equation}
+
+\textbf{热泵/制冷机}的输出与电力输入关系：
+\begin{equation}
+\label{eq:hp_chiller}
+P_{i,t}^{h/c} = COP_i \cdot P_{i,t}^{in}
+\end{equation}
+
+\textbf{吸收式制冷机}以热能为输入驱动制冷：
+\begin{equation}
+\label{eq:abs_chiller}
+P_{i,t}^c = COP_i \cdot P_{i,t}^{h,in}
+\end{equation}
+
+\subsubsection{电网传输约束}
+
+区域间电力传输采用直流潮流（DC Power Flow）近似模型：
+\begin{equation}
+\label{eq:dc_flow}
+F_{ij,t} = B_{ij}(\theta_{i,t} - \theta_{j,t}), \quad \forall t\in\mathcal{T},\, (i,j)\in\mathcal{E}
+\end{equation}
+
+线路潮流受传输容量限制：
+\begin{equation}
+\label{eq:line_limit}
+-F_{ij}^{max} \le F_{ij,t} \le F_{ij}^{max}
+\end{equation}
+
+参考节点相角固定：$\theta_{ref,t} = 0$。
 
 \subsection{储能动力学与日内闭环}
 
-储能状态满足
-\[
-SOC_{t+1,z,s}=SOC_{t,z,s}+\eta_{ch,s}P^{ch}_{t,z,s}-\frac{1}{\eta_{dis,s}}P^{dis}_{t,z,s},
-\]
-并采用日内闭环约束 $SOC_{d,0,z,s}=SOC_{d,24,z,s}$。电储能效率取 $0.92$，热/冷储能效率取 $0.95$，SOC 下限与上限分别为 $0$ 与 $1$。该设定与平台逐日求解一致，同时允许跨日 SOC 跳变。
+储能系统的状态演化满足离散时间动力学方程（$\forall t\in\mathcal{T},\, z\in\mathcal{Z},\, s\in\mathcal{S}$）：
+\begin{equation}
+\label{eq:soc_dynamics}
+SOC_{t+1,z,s} = SOC_{t,z,s} + \eta_{ch,s} \cdot P_{t,z,s}^{ch} - \frac{1}{\eta_{dis,s}} \cdot P_{t,z,s}^{dis}
+\end{equation}
 
-\subsection{成本、排放与评分}
+储能状态与功率约束：
+\begin{equation}
+\label{eq:soc_limits}
+0 \le SOC_{t,z,s} \le C_{z,s}^{sto}, \qquad 0 \le P_{t,z,s}^{ch} \le P_{z,s}^{ch,max}, \qquad 0 \le P_{t,z,s}^{dis} \le P_{z,s}^{dis,max}
+\end{equation}
 
-年度总成本由年化投资、运行成本与碳惩罚构成
-\[
-C_{total} = C_{CAP} + C_{OP} + C_{Carbon}.
-\]
-碳惩罚为
-\[
-C_{Carbon}=600\cdot\max(0, E_{total}-100000),
-\]
-其中
-\[
-E_{total}=\sum_t\big(EF_e(t)\,P_{ele}(t)+EF_g(t)\,G_{m^3}(t)\big).
-\]
-OJ 评分采用 Logistic 映射
-\[
-Score = \frac{100}{1+\exp\big(\frac{C_{total}/10000 - x_0}{k}\big)},\qquad x_0=100000,\ k=15000.
-\]
+为与平台逐日求解机制对齐，采用日内闭环约束：
+\begin{equation}
+\label{eq:daily_loop}
+SOC_{d,1,z,s} = SOC_{d,24,z,s}, \qquad \forall d \in \{1,\ldots,365\}
+\end{equation}
+即每日始末的储能状态相等，允许跨日 SOC 跳变。效率参数设定为：电储能效率取 $0.92$，热储能与冷储能充放效率 $\eta_{ch}=\eta_{dis}=0.95$，SOC 下限与上限分别为 $0$ 与 $1$。
+
+\subsection{OJ评分函数}
+
+OJ 评分系统采用 Logistic 映射函数将年度总成本（单位：万元）转换为 0--100 分的评分：
+\begin{equation}
+\label{eq:oj_score}
+Score = \frac{100}{1+\exp\big(\frac{C_{total}/10000 - x_0}{k}\big)},\qquad x_0=100000,\ k=15000
+\end{equation}
+该函数的中心点位于 $C_{total} = 10$ 亿元（对应 50 分），斜率参数 $k = 15000$ 决定了成本变化对评分的敏感度。
 
 \subsection{双层模型与对齐价推导}
 
-原始结构为“规划-运行”双层模型，上层以真实价格与碳惩罚为目标，下层以引导电价/气价求解运行调度。若在固定 Plan18 条件下满足“碳阈值必超标”，则碳惩罚恒处于线性区。记 $EF_g^{MWh}=EF_g/0.01$，则
-\[
-C_{OP}^{true}(x)+C_{Carbon} = \sum_t \big((\pi_e^{true}+600EF_e)P_{ele}+(\pi_g^{true}+600EF_g^{MWh})G_{buy}\big)+C_{shed}+\text{常数}.
-\]
+\subsubsection{原始双层优化问题}
 
-由此定义对齐价
-\[
-\pi_e^{align}(t)=\pi_e^{true}(t)+600EF_e(t),\qquad
-\pi_g^{align}(t)=\pi_g^{true}(t)+600EF_g^{MWh}(t),
-\]
-使得下层调度目标与上层评分目标一致，双层问题退化为单层优化。其物理含义是将碳惩罚转化为逐小时边际碳税，直接叠加在电/气单价上，从而在运行层面内生地实现“真实成本最优”。
+校园综合能源系统规划问题的原始结构为"规划-运行"双层优化模型。上层决策者（规划层）以真实价格与碳惩罚为目标确定设备容量规划与引导价格；下层调度者（运行层）以引导电价与气价为依据执行逐日运行调度。
 
-\subsection{引导电价/气价处理与输出单位}
+\textbf{上层问题（规划层）}：
+\begin{equation}
+\label{eq:upper_level}
+\min_{y,\,\boldsymbol{\pi}^{guide}} \quad C_{CAP}(y) + \sum_{t=1}^{8760}\Big[\pi_e^{true}(t)P_{ele}^*(t) + \pi_g^{true}(t)G_{buy}^*(t)\Big] + C_{Carbon}\big(E_{total}^*\big) + C_{shed}\sum_t L_{shed}^*(t)
+\end{equation}
 
-引导电价与气价由评分口径与碳因子直接构造，对齐后的气价在内部计算中以 MWh 口径表示，但平台输入要求元/m$^3$，因此导出时需转换
-\[
-\pi_g^{align,m^3}(t)=\frac{\pi_g^{align,MWh}(t)}{0.01}.
-\]
+\textbf{下层问题（运行层）}：
+\begin{equation}
+\label{eq:lower_level}
+x^*(t) = \arg\min_{x(t)} \sum_{t=1}^{8760}\Big[\pi_e^{guide}(t)P_{ele}(t) + \pi_g^{guide}(t)G_{buy}(t) + C_{shed}L_{shed}(t)\Big]
+\end{equation}
+受制于能量平衡约束、设备容量约束、储能动力学约束等。
+
+\subsubsection{碳排放结构与阈值超标的必然性}
+
+\textbf{事实一}：系统碳排放的唯一来源为购电与购气，年度总碳排放量可严格表示为式~\eqref{eq:emission}。
+
+\textbf{事实二}：在任何可行方案下，系统碳排放必然超过阈值 100,000 tCO$_2$。系统的最低可实现碳排放下限约为 $1.76\times10^{5}$ tCO$_2$，这意味着碳惩罚函数始终处于线性区：
+\begin{equation}
+\label{eq:carbon_linear}
+C_{Carbon}(E_{total}) = 600 \cdot (E_{total} - 100000) = 600 \cdot E_{total} - 6.0\times10^7
+\end{equation}
+
+\subsubsection{对齐价格的严格推导}
+
+基于上述事实，可将碳惩罚显式展开并嵌入运行层目标函数。记能量口径的购气碳因子为 $EF_g^{MWh}(t) = EF_g(t)/0.01$，则上层目标函数中与运行变量相关的部分可改写为：
+\begin{equation}
+\label{eq:cost_transform}
+\begin{aligned}
+&\sum_t\Big[\pi_e^{true}(t)P_{ele}(t) + \pi_g^{true}(t)G_{buy}(t)\Big] + C_{Carbon} \\
+=\;&\sum_t\Big[\big(\pi_e^{true}(t) + 600\cdot EF_e(t)\big)P_{ele}(t) + \big(\pi_g^{true}(t) + 600\cdot EF_g^{MWh}(t)\big)G_{buy}(t)\Big] - 6.0\times10^7
+\end{aligned}
+\end{equation}
+
+由此定义\textbf{对齐价格}（aligned price）：
+\begin{equation}
+\label{eq:aligned_price}
+\boxed{\pi_e^{align}(t) = \pi_e^{true}(t) + 600\cdot EF_e(t), \qquad \pi_g^{align}(t) = \pi_g^{true}(t) + 600\cdot EF_g^{MWh}(t)}
+\end{equation}
+
+\textbf{定理（双层-单层等价性）}：若令引导价格 $\boldsymbol{\pi}^{guide} = \boldsymbol{\pi}^{align}$，则下层问题的最优解 $x^*$ 同时也是上层目标函数的全局最优解。此时双层优化问题退化为单层 MILP：
+\begin{equation}
+\label{eq:single_level}
+\min_{y,x} \quad C_{CAP}(y) + \sum_{t=1}^{8760}\Big[\pi_e^{align}(t)P_{ele}(t) + \pi_g^{align}(t)G_{buy}(t) + C_{shed}L_{shed}(t)\Big]
+\end{equation}
+
+\subsubsection{碳税对齐的物理意义}
+
+通过将年度碳惩罚分解为逐小时边际碳税，可以使"短视"的日内调度决策自动实现"长视"的全年最优。当调度者在时刻 $t$ 决定购电量 $P_{ele}(t)$ 时，该决策对年末碳惩罚的边际贡献为：
+\begin{equation}
+\label{eq:marginal_carbon}
+\frac{\partial C_{Carbon}}{\partial P_{ele}(t)} = 600 \cdot EF_e(t)
+\end{equation}
+这正是对齐价格中叠加于真实电价之上的"碳税"部分，将碳排放的外部性内部化。
+
+\subsection{引导电价与气价的单位处理}
+
+引导电价与气价由评分口径与碳因子直接构造。对齐后的气价在内部计算中以 MWh 口径表示，但平台输入要求元/m$^3$，因此导出时需转换：
+\begin{equation}
+\label{eq:gas_price_convert}
+\pi_g^{align,m^3}(t)=\frac{\pi_g^{align,MWh}(t)}{0.01}
+\end{equation}
 该转换逻辑在导出模块中固化，保证平台侧输入单位一致。
 
 \subsection{单层 MILP 与分段碳惩罚}
 
-最终单层 MILP 的目标为
-\[
-\min\ C_{CAP}(y)+\sum_{t=1}^{8760}\Big(\pi_e^{align}(t)P_{ele}(t)+\pi_g^{align}(t)G_{buy}(t)+C_{shed}L_{shed}(t)\Big).
-\]
+最终单层 MILP 的目标为：
+\begin{equation}
+\label{eq:final_milp}
+\min\ C_{CAP}(y)+\sum_{t=1}^{8760}\Big(\pi_e^{align}(t)P_{ele}(t)+\pi_g^{align}(t)G_{buy}(t)+C_{shed}L_{shed}(t)\Big)
+\end{equation}
 
-当碳阈值可能被满足时，碳惩罚为分段函数。本文通过“松弛区/罚金区”两类 MILP 分别求解并取最优值，从而保证全局最优。该策略在碳阈值调整实验中得到验证。
+当碳阈值可能被满足时，碳惩罚为分段函数，导致问题的非凸性。本文采用分段求解策略：分别在"松弛区"（碳排放低于阈值，无惩罚）与"罚金区"（碳排放超过阈值，线性惩罚）两种假设下构建独立的 MILP 模型并求解，最后比较两种方案的目标值并取最优，从而保证全局最优性。

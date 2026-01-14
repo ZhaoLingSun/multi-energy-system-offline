@@ -1,6 +1,10 @@
 \section{数据与接口规范}
 
-本研究严格遵循 MEOS 平台输入输出接口与 OJ 评分文件规范，在数据处理环节贯彻单位一致、口径冻结与格式可逆三项原则。表~\ref{tab:data_spec} 汇总主要输入数据的类别、时间频率与单位口径。
+本研究严格遵循 MEOS 平台输入输出接口与 OJ 评分文件规范，在数据处理环节贯彻单位一致、口径冻结与格式可逆三项原则。
+
+\subsection{输入数据规范}
+
+表~\ref{tab:data_spec} 汇总主要输入数据的类别、时间频率与单位口径。
 
 \begin{table}[htbp]
 \centering
@@ -20,17 +24,30 @@
 \end{tabularx}
 \end{table}
 
-气价与能量的换算采用固定系数 $1$ m$^3$ $=0.01$ MWh。购气成本在 m$^3$ 口径下为
+\subsection{气价与能量换算}
 
-\[
-G_{m^3}(t)=\frac{G_{MWh}(t)}{0.01},\qquad
-C_{gas}=\sum_{t=1}^{8760} G_{m^3}(t)\,\pi_g^{true}(t).
-\]
+气价与能量的换算采用固定系数 $1$ m$^3$ $=0.01$ MWh。购气成本在 m$^3$ 口径下为：
+\begin{equation}
+\label{eq:gas_volume}
+G_{m^3}(t)=\frac{G_{MWh}(t)}{0.01}
+\end{equation}
+\begin{equation}
+\label{eq:gas_cost}
+C_{gas}=\sum_{t=1}^{8760} G_{m^3}(t)\,\pi_g^{true}(t)
+\end{equation}
 
-风光出力以额定容量 500 MW 进行折算，若输入为标幺 $\rho(t)\in[0,1]$，则
+\subsection{风光出力折算}
 
-\[
-P_{res}(t)=\rho(t)\,P_{rated},\qquad P_{rated}=500\,\text{MW}.
-\]
+风光出力以额定容量 500 MW 进行折算，若输入为标幺 $\rho(t)\in[0,1]$，则：
+\begin{equation}
+\label{eq:res_output}
+P_{res}(t)=\rho(t)\,P_{rated},\qquad P_{rated}=500\,\text{MW}
+\end{equation}
 
-平台输出侧遵循 MEOS 导出 Excel 与 OJ CSV 规范。导出结果经 \texttt{verify\_platform\_export.py} 转写为平台 CSV 与 OJ CSV，再用统一评分器 \texttt{score\_oj\_csv.py} 复算，保证口径一致。OJ 评分口径通过探针扰动冻结：在基准 CSV 上对单小时负荷与购电量施加微小扰动，验证评分变化与 Logistic 函数一致，从而确认评分输入、价格口径与碳惩罚的数值结构。
+\subsection{输出格式规范}
+
+平台输出侧遵循 MEOS 导出 Excel 与 OJ CSV 规范。导出结果经 \texttt{verify\_platform\_export.py} 转写为平台 CSV 与 OJ CSV，再用统一评分器 \texttt{score\_oj\_csv.py} 复算，保证口径一致。
+
+\subsection{评分口径冻结}
+
+OJ 评分口径通过"探针扰动"冻结：在基准 CSV 上对单小时负荷与购电量施加微小扰动，验证评分变化与 Logistic 函数一致，从而确认评分输入、价格口径与碳惩罚的数值结构。这一过程确保了模型求解与平台评分之间不存在隐性偏差。

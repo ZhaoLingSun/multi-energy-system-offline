@@ -1,7 +1,7 @@
 \appendix
 \section{关键产物与复现路径}
 
-表~\ref{tab:artifacts} 汇总主任务与平台复算的关键产物。
+表~\ref{tab:artifacts}汇总主任务与平台复算的关键产物。
 
 \begin{table}[htbp]
 \centering
@@ -18,3 +18,74 @@
 \bottomrule
 \end{tabularx}
 \end{table}
+
+\section{思考题实验数据来源}
+
+表~\ref{tab:thought_data}汇总了思考题实验的数据来源。
+
+\begin{table}[htbp]
+\centering
+\caption{思考题实验数据来源}
+\label{tab:thought_data}
+\begin{tabularx}{\textwidth}{l l >{\raggedright\arraybackslash}X}
+\toprule
+思考题 & 实验类型 & 数据路径 \\
+\midrule
+Q1 建筑节能 & 改造前后对比 & \texttt{runs/thought\_questions/q1\_retrofit\_*/summary.json} \\
+Q2 跨季节储能 & 基础实验 & \texttt{runs/thought\_questions/q2\_seasonal\_storage\_*/summary.json} \\
+Q2 跨季节储能 & 敏感性分析 & \texttt{runs/thought\_questions/q2\_sensitivity\_*/summary.json} \\
+Q3 管道储能 & 热管道实验 & \texttt{runs/thought\_questions/q3\_heat\_pipeline\_*/summary.json} \\
+Q3 管道储能 & 气管道实验 & \texttt{runs/thought\_questions/q3\_gas\_linepack\_*/summary.json} \\
+Q3 管道储能 & 综合实验 & \texttt{runs/thought\_questions/q3\_combined\_pipeline\_*/summary.json} \\
+Q4 容量约束 & 二维参数扫描 & \texttt{runs/thought\_questions/q4\_milp\_*/summary.json}（40组） \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{求解器配置}
+
+本研究使用 Gurobi 商业求解器进行 MILP 求解，主要参数配置如表~\ref{tab:solver_config}所示。
+
+\begin{table}[htbp]
+\centering
+\caption{Gurobi 求解器配置}
+\label{tab:solver_config}
+\begin{tabular}{ll}
+\toprule
+参数 & 设置值 \\
+\midrule
+MIPGap & $5\times10^{-5}$ \\
+TimeLimit & 7200 秒 \\
+Threads & 自动 \\
+Method & 自动选择 \\
+Presolve & 自动 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{项目代码与在线展示}
+
+本项目的完整源代码已开源托管于 GitHub 平台，交互式展示页面提供了可视化的结果呈现。
+
+\begin{table}[htbp]
+\centering
+\caption{项目链接}
+\label{tab:project_links}
+\begin{tabularx}{\textwidth}{l >{\raggedright\arraybackslash}X}
+\toprule
+资源 & 链接 \\
+\midrule
+GitHub 仓库 & \url{https://github.com/ZhaoLingSun/electricracker} \\
+Git 克隆地址 & \texttt{git@github.com:ZhaoLingSun/electricracker.git} \\
+交互式展示页面 & \url{https://electricracker.de5.net/projects/multi-energy-offline/showcase} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+交互式展示页面提供了以下功能：
+\begin{itemize}
+\item 设备规划方案可视化
+\item 全年 8760 小时调度曲线展示
+\item 成本与碳排放分析图表
+\item 思考题实验结果对比
+\end{itemize}

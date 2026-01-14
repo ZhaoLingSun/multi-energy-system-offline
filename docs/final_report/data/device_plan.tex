@@ -1,6 +1,10 @@
 \section{设备体系与 Plan18 最优配置}
 
-规划变量采用 Plan18 体系，设备基准容量与造价由 \texttt{spec/device\_catalog.yaml} 统一定义，风光容量直接按 MW 计。表~\ref{tab:plan18} 给出最终最优解的 Plan18 配置，表~\ref{tab:storage_zone} 给出分区储能配置。
+规划变量采用 Plan18 体系，设备基准容量与造价由 \texttt{spec/device\_catalog.yaml} 统一定义，风光容量直接按 MW 计。
+
+\subsection{最优设备配置}
+
+表~\ref{tab:plan18} 给出最终最优解的 Plan18 配置，表~\ref{tab:storage_zone} 给出分区储能配置。
 
 \begin{longtable}{lrrrrl}
 \caption{最优 Plan18 设备配置} \\
@@ -43,3 +47,9 @@ CCHP & 11 & 3 & 33 & MW \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{配置方案解读}
+
+从表~\ref{tab:plan18}可以看出，最优方案大量配置风电（362 MW）与光伏（372 MW）以利用可再生能源，同时配备 P2G 装置（162 MW）用于电转气的能源形式转换。制冷设备以压缩式制冷机 A（36.5 MW）与吸收式制冷机（60 MW）为主，供热设备以燃气锅炉（64 MW）与热泵（共 38 MW）为主。储能系统配置热储能 960 MWh 与冷储能 1240 MWh，用于削峰填谷与日内调度优化。
+
+如表~\ref{tab:storage_zone}所示，储能容量在三个分区之间的分配体现了负荷特性与调度需求的差异：学生区与教工区的热储能容量较大（各 400 MWh），而教学办公区的冷储能容量最大（960 MWh），反映了该区域冷负荷的峰谷差异较为显著。
