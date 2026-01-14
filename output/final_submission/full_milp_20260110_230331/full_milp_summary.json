@@ -1,0 +1,194 @@
+{
+  "status": 2,
+  "status_name": "OPTIMAL",
+  "elapsed_sec": 180.47734332084656,
+  "n_days": 365,
+  "n_hours": 8760,
+  "carbon_mode": "aligned",
+  "carbon_regime": "auto",
+  "objective_mode": "cost",
+  "carbon_threshold": 100000,
+  "carbon_price": 600,
+  "plan18_bounds": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      128
+    ],
+    [
+      0,
+      64
+    ],
+    [
+      0,
+      64
+    ],
+    [
+      0,
+      128
+    ],
+    [
+      0,
+      128
+    ],
+    [
+      0,
+      64
+    ],
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      64
+    ],
+    [
+      0,
+      64
+    ],
+    [
+      0,
+      500
+    ],
+    [
+      0,
+      500
+    ],
+    [
+      0,
+      328
+    ],
+    [
+      0,
+      64
+    ],
+    [
+      0,
+      32
+    ]
+  ],
+  "run_dir": "runs/full_milp/full_milp_20260110_230331",
+  "objective": 747958334.8585293,
+  "objective_bound": 747887350.184165,
+  "mip_gap": 9.49045836594021e-05,
+  "plan18": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    69.0,
+    2.0,
+    6.0,
+    35.0,
+    9.0,
+    2.0,
+    0.0,
+    22.0,
+    22.0,
+    358.0,
+    373.0,
+    314.0,
+    29.0,
+    10.0
+  ],
+  "storage_zone_names": [
+    "学生区",
+    "教工区",
+    "教学办公区"
+  ],
+  "storage_type_names": [
+    "电储能",
+    "热储能",
+    "冷储能"
+  ],
+  "storage_units_by_zone": [
+    [
+      0.0,
+      10.0,
+      7.0
+    ],
+    [
+      0.0,
+      9.0,
+      -0.0
+    ],
+    [
+      0.0,
+      3.0,
+      15.0
+    ]
+  ],
+  "storage_capacity_by_zone": [
+    [
+      0.0,
+      400.0,
+      280.0
+    ],
+    [
+      0.0,
+      360.0,
+      -0.0
+    ],
+    [
+      0.0,
+      120.0,
+      600.0
+    ]
+  ],
+  "storage_power_by_zone": [
+    [
+      0.0,
+      80.0,
+      56.0
+    ],
+    [
+      0.0,
+      72.0,
+      -0.0
+    ],
+    [
+      0.0,
+      24.0,
+      120.0
+    ]
+  ],
+  "C_CAP": 343281540.5202852,
+  "C_OP": 298355915.06540275,
+  "C_Carbon": 46320879.27284015,
+  "C_total": 687958334.858528,
+  "Score": 88.89714522498639,
+  "carbon": {
+    "emission_electricity": 80988.92087568149,
+    "emission_gas": 96212.5445790521,
+    "emission_total": 177201.46545473358,
+    "emission_threshold": 100000,
+    "emission_excess": 77201.46545473358,
+    "carbon_price": 600
+  },
+  "cache_key": "7c70c33d35f63165",
+  "capacity_yaml": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_capacity.yaml",
+  "guide_price_csv": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_guide_price.csv",
+  "guide_gas_csv": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_guide_gas_price.csv",
+  "pv_curve_csv": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_pv_curve_mw.csv",
+  "pv_curve_xlsx": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_pv_curve_mw.xlsx",
+  "wind_curve_csv": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_wind_curve_mw.csv",
+  "wind_curve_xlsx": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_wind_curve_mw.xlsx",
+  "platform_csv": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_platform.csv",
+  "oj_csv": "runs/full_milp/full_milp_20260110_230331/7c70/7c70c33d35f63165_oj.csv"
+}

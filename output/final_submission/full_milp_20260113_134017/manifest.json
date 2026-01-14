@@ -1,0 +1,18 @@
+{
+  "source_run_dir": "runs/full_milp/full_milp_20260113_134017",
+  "cache_key": "2c5c06fab09754cf",
+  "files": {
+    "full_milp_summary.json": "output/final_submission/full_milp_20260113_134017/full_milp_summary.json",
+    "2c5c06fab09754cf_capacity.yaml": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_capacity.yaml",
+    "2c5c06fab09754cf_guide_price.csv": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_guide_price.csv",
+    "2c5c06fab09754cf_guide_gas_price.csv": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_guide_gas_price.csv",
+    "2c5c06fab09754cf_oj.csv": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_oj.csv",
+    "2c5c06fab09754cf_platform.csv": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_platform.csv",
+    "2c5c06fab09754cf_pv_curve_mw.csv": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_pv_curve_mw.csv",
+    "2c5c06fab09754cf_pv_curve_mw.xlsx": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_pv_curve_mw.xlsx",
+    "2c5c06fab09754cf_wind_curve_mw.csv": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_wind_curve_mw.csv",
+    "2c5c06fab09754cf_wind_curve_mw.xlsx": "output/final_submission/full_milp_20260113_134017/2c5c06fab09754cf_wind_curve_mw.xlsx",
+    "guide_price.xlsx": "output/final_submission/full_milp_20260113_134017/guide_price.xlsx",
+    "guide_gas_price.xlsx": "output/final_submission/full_milp_20260113_134017/guide_gas_price.xlsx"
+  }
+}

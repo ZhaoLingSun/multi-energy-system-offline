@@ -1,0 +1,22 @@
+{
+  "source_run_dir": "runs/full_milp/full_milp_20260110_230331",
+  "cache_key": "7c70c33d35f63165",
+  "files": {
+    "full_milp_summary.json": "output/final_submission/full_milp_20260110_230331/full_milp_summary.json",
+    "7c70c33d35f63165_capacity.yaml": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_capacity.yaml",
+    "7c70c33d35f63165_guide_price.csv": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_guide_price.csv",
+    "7c70c33d35f63165_guide_gas_price.csv": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_guide_gas_price.csv",
+    "7c70c33d35f63165_oj.csv": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_oj.csv",
+    "7c70c33d35f63165_platform.csv": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_platform.csv",
+    "7c70c33d35f63165_pv_curve_mw.csv": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_pv_curve_mw.csv",
+    "7c70c33d35f63165_pv_curve_mw.xlsx": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_pv_curve_mw.xlsx",
+    "7c70c33d35f63165_wind_curve_mw.csv": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_wind_curve_mw.csv",
+    "7c70c33d35f63165_wind_curve_mw.xlsx": "output/final_submission/full_milp_20260110_230331/7c70c33d35f63165_wind_curve_mw.xlsx",
+    "guide_price.xlsx": "output/final_submission/full_milp_20260110_230331/guide_price.xlsx",
+    "guide_gas_price.xlsx": "output/final_submission/full_milp_20260110_230331/guide_gas_price.xlsx",
+    "pv_curve_mw.xlsx": "output/final_submission/full_milp_20260110_230331/pv_curve_mw.xlsx",
+    "wind_curve_mw.xlsx": "output/final_submission/full_milp_20260110_230331/wind_curve_mw.xlsx",
+    "pv_curve_mw.csv": "output/final_submission/full_milp_20260110_230331/pv_curve_mw.csv",
+    "wind_curve_mw.csv": "output/final_submission/full_milp_20260110_230331/wind_curve_mw.csv"
+  }
+}

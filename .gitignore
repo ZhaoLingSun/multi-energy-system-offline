@@ -22,7 +22,6 @@ Thumbs.db
 
 # Outputs
 runs/
-output/
 logs/
 *.log
 docs/final_report/*.aux

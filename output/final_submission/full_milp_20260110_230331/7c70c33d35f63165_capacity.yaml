@@ -1,0 +1,22 @@
+metadata:
+  cache_key: 7c70c33d35f63165
+  timestamp: '2026-01-10T23:11:47.660839'
+plan18:
+  AC: 6.0
+  CCHP: 10.0
+  CC_A: 69.0
+  CC_B: 2.0
+  CHP_A: 0.0
+  CHP_B: 0.0
+  CS: 22.0
+  EB: 0.0
+  ES: 0.0
+  GB: 35.0
+  GSHP_A: 9.0
+  GSHP_B: 2.0
+  GT: 29.0
+  HS: 22.0
+  ICE: 0.0
+  P2G: 314.0
+  PV: 373.0
+  WT: 358.0
