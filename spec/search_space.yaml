@@ -24,7 +24,7 @@ search_space:
       base: 2.0
       type: "discrete_multiple"
       min_multiple: 0
-      max_multiple: 0
+      max_multiple: 4096
       step_multiple: 1
       description: "热电联产A容量（禁用）"
 
@@ -34,7 +34,7 @@ search_space:
       base: 8.0
       type: "discrete_multiple"
       min_multiple: 0
-      max_multiple: 0
+      max_multiple: 4096
       step_multiple: 1
       description: "热电联产B容量（禁用）"
 
@@ -44,7 +44,7 @@ search_space:
       base: 10.0
       type: "discrete_multiple"
       min_multiple: 0
-      max_multiple: 0
+      max_multiple: 4096
       step_multiple: 1
       description: "内燃机容量（禁用）"
 
@@ -54,7 +54,7 @@ search_space:
       base: 2.0
       type: "discrete_multiple"
       min_multiple: 0
-      max_multiple: 0
+      max_multiple: 4096
       step_multiple: 1
       description: "电锅炉容量（禁用）"
 
@@ -124,7 +124,7 @@ search_space:
       base: 2.0
       type: "discrete_multiple"
       min_multiple: 0
-      max_multiple: 0
+      max_multiple: 4096
       step_multiple: 1
       description: "电储能容量（禁用）"
 
@@ -271,7 +271,7 @@ presets:
         max_multiple: 6
       battery_storage_capacity:
         min_multiple: 0
-        max_multiple: 0
+        max_multiple: 4096
     max_evals: 50
   quick:
     description: "快速搜索 - 中等搜索空间"
