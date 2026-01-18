@@ -34,3 +34,5 @@ docs/final_report/missfont.log
 # Temporary
 *.tmp
 *.swp
+
+run_intranet_docker.sh
