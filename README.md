@@ -117,11 +117,11 @@ runs/                   # 运行输出（可清理再生）
 ## 数学目标与评分口径
 
 - 年化投资成本：
-  \(C_{CAP}=\sum_k Cap_k\cdot UnitCost_k\cdot \alpha(i,n)\)
+  $$C_{CAP}=\sum_k Cap_k\cdot UnitCost_k\cdot \alpha(i,n)$$
 - 运行成本：
-  \(C_{OP}=\sum_t(\pi_e P_e + \pi_g G + 500000\cdot L_{shed})\)
+  $$C_{OP}=\sum_t(\pi_e P_e + \pi_g G + 500000\cdot L_{shed})$$
 - 碳惩罚：
-  \(C_{Carbon}=600\cdot \max(0, E_{total}-100000)\)
+  $$C_{Carbon}=600\cdot \max(0, E_{total}-100000)$$
 
 当排放必然超阈值时，碳惩罚等价于线性碳税，可并入价格系数，形成单层 MILP。
 
