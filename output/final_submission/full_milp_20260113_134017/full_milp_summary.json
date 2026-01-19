@@ -84,8 +84,8 @@
     ]
   ],
   "run_dir": "runs/full_milp/full_milp_20260113_134017",
-  "objective": 747945931.4174526,
-  "objective_bound": 747910124.9614286,
+  "objective": 687945931.4174526,
+  "objective_bound": 687910124.9614286,
   "mip_gap": 4.787305408035808e-05,
   "plan18": [
     0.0,

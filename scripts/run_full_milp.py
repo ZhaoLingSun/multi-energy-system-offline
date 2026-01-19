@@ -775,9 +775,15 @@ def build_and_solve(
         "run_dir": str(run_dir),
     }
     if hasattr(model, "ObjVal") and status in (GRB.OPTIMAL, GRB.TIME_LIMIT):
-        summary["objective"] = float(model.ObjVal)
+        objective = float(model.ObjVal)
+        if objective_mode == "cost" and carbon_mode == "aligned":
+            objective -= carbon_price * carbon_threshold
+        summary["objective"] = objective
     if hasattr(model, "ObjBound") and status in (GRB.OPTIMAL, GRB.TIME_LIMIT):
-        summary["objective_bound"] = float(model.ObjBound)
+        objective_bound = float(model.ObjBound)
+        if objective_mode == "cost" and carbon_mode == "aligned":
+            objective_bound -= carbon_price * carbon_threshold
+        summary["objective_bound"] = objective_bound
     if hasattr(model, "MIPGap") and status in (GRB.OPTIMAL, GRB.TIME_LIMIT):
         summary["mip_gap"] = float(model.MIPGap)
 

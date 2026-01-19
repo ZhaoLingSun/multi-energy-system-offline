@@ -5,7 +5,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-      - /opt/gurobi:/opt/gurobi
+      - /home/ace/gurobi.lic:/app/gurobi.lic:ro
     environment:
-      - GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic
-    command: ["python", "run_all.py", "--mip-gap", "0.1", "--days", "7", "--threads", "4", "--time-limit", "300"]
+      - GRB_LICENSE_FILE=/app/gurobi.lic
+    command: ["python", "run_all.py", "--mip-gap", "1e-3", "--threads", "64"]

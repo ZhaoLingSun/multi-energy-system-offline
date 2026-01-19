@@ -40,7 +40,7 @@ python scripts/run_full_milp.py \
   --data-dir data/raw \
   --renewable-dir data/raw \
   --output-dir runs/full_milp \
-  --mip-gap 1e-4 \
+  --mip-gap 1e-3 \
   --threads 64
 ```
 
@@ -51,19 +51,20 @@ python scripts/run_full_milp.py \
 ### 一键运行全部仿真
 
 ```bash
-python run_all.py --mip-gap 1e-4 --threads 64
+python run_all.py --mip-gap 1e-3 --threads 64
 ```
 
-### Docker 快速验证（收敛容差 0.1）
+### Docker（intranet）
 
 ```bash
 docker build -t meos-offline .
-docker run --rm \\
-  -e GRB_LICENSE_FILE=/opt/gurobi/gurobi.lic \\
-  -v /opt/gurobi:/opt/gurobi \\
+docker run --rm --name meos-offline \\
+  --mount type=bind,src=/home/ace/gurobi.lic,dst=/app/gurobi.lic,ro \\
+  -e GRB_LICENSE_FILE=/app/gurobi.lic \\
   -v $(pwd):/app \\
+  -w /app \\
   meos-offline \\
-  python run_all.py --mip-gap 0.1 --days 7 --threads 4 --time-limit 300
+  python run_all.py --mip-gap 1e-3 --threads 64
 ```
 
 ### 2) OJ 评分复算
